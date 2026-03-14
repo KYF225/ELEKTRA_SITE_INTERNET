@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formations & Services | ELEKTRA IFS – Abidjan</title>
+  <meta name="description" content="Programmes de formation continue sur mesure en automatisme, électrotechnique, instrumentation et énergies renouvelables. Formations intra-entreprise à Abidjan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:    #FFFFFF;
+      --dark:     #F2F4EF;
+      --dark2:    #E8EBE3;
+      --green:    #2D6A35;
+      --green-light: #2D6A35;
+      --green-dim: rgba(45,106,53,0.12);
+      --orange:   #E8651A;
+      --orange-light: #F47B30;
+      --orange-dim: rgba(232,101,26,0.12);
+      --white:    #1A1C18;
+      --gray:     #5A6450;
+      --border:   rgba(0,0,0,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Outfit', sans-serif; font-weight: 400; line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.15; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; padding: 0 5%; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
+    nav.scrolled { height: 60px; background: rgba(255,255,255,0.99); box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-img { width: 42px; height: 42px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(232,101,26,0.3)); transition: filter 0.3s ease; }
+    .nav-logo:hover .nav-logo-img { filter: drop-shadow(0 0 10px rgba(232,101,26,0.5)); }
+    .nav-logo-text { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 2px; color: var(--white); }
+    .nav-logo-text span { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { background: var(--orange); color: white !important; padding: 8px 20px; border-radius: 4px; font-weight: 600 !important; transition: background 0.2s, transform 0.2s !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    #page-hero { position: relative; padding: 140px 5% 80px; overflow: hidden; background: var(--dark); }
+    #page-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(232,101,26,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(45,106,53,0.07) 1px, transparent 1px); background-size: 60px 60px; animation: gridPan 20s linear infinite; }
+    #page-hero::after { content: ''; position: absolute; top: 50%; right: 10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(232,101,26,0.1) 0%, transparent 70%); transform: translateY(-50%); pointer-events: none; }
+    @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+    .breadcrumb { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; animation: fadeUp 0.5s ease both; }
+    .breadcrumb a { color: var(--orange); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--orange-dim); border: 1px solid rgba(232,101,26,0.4); padding: 6px 16px; border-radius: 100px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--orange); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; width: fit-content; position: relative; z-index: 1; animation: fadeUp 0.6s 0.05s ease both; }
+    .page-hero-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; letter-spacing: -1px; text-transform: uppercase; position: relative; z-index: 1; animation: fadeUp 0.7s 0.1s ease both; }
+    .page-hero-title .accent { color: var(--orange); }
+    .page-hero-title .accent-green { color: var(--green-light); }
+    .page-hero-desc { max-width: 620px; color: #4A5442; font-size: 1.05rem; line-height: 1.7; margin-top: 1.5rem; position: relative; z-index: 1; animation: fadeUp 0.7s 0.2s ease both; }
+    .page-hero-actions { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; position: relative; z-index: 1; animation: fadeUp 0.7s 0.3s ease both; }
+    .page-hero-stats { display: flex; gap: 3rem; margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); position: relative; z-index: 1; animation: fadeUp 0.7s 0.4s ease both; flex-wrap: wrap; }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 2rem; color: var(--white); line-height: 1; }
+    .stat-num span { color: var(--orange); }
+    .stat-label { font-size: 0.75rem; color: var(--gray); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    section { padding: 90px 5%; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--orange); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 12px; }
+    .section-label::before { content: ''; display: inline-block; width: 30px; height: 2px; background: var(--orange); }
+    .section-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3rem); text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.05; }
+    .section-title .accent { color: var(--orange); }
+    .section-title .accent-green { color: var(--green-light); }
+
+    /* Catalogue formations */
+    #catalogue { background: var(--black); }
+    .catalogue-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 4rem; }
+    .catalogue-intro { color: var(--gray); font-size: 1rem; line-height: 1.8; margin-top: 1.5rem; }
+    .formations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .formation-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; transition: all 0.3s ease; position: relative; }
+    .formation-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--green), var(--orange)); border-radius: 10px 10px 0 0; opacity: 0; transition: opacity 0.3s; }
+    .formation-card:hover::before { opacity: 1; }
+    .formation-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .formation-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; display: inline-block; margin-bottom: 1rem; }
+    .tag-auto { background: var(--green-dim); color: var(--green-light); border: 1px solid rgba(45,106,53,0.3); }
+    .tag-elec { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(232,101,26,0.3); }
+    .tag-instr { background: rgba(100,120,200,0.1); color: #3A5FC8; border: 1px solid rgba(100,120,200,0.3); }
+    .tag-energy { background: rgba(200,160,20,0.1); color: #A07800; border: 1px solid rgba(200,160,20,0.3); }
+    .tag-maint { background: rgba(120,60,180,0.1); color: #6B3AAC; border: 1px solid rgba(120,60,180,0.3); }
+    .tag-scada { background: rgba(20,160,180,0.1); color: #0E8A9A; border: 1px solid rgba(20,160,180,0.3); }
+    .formation-card h3 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.15rem; text-transform: uppercase; color: var(--white); margin-bottom: 0.6rem; line-height: 1.2; }
+    .formation-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.25rem; }
+    .formation-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--gray); letter-spacing: 1.5px; text-transform: uppercase; }
+    .meta-value { font-size: 0.82rem; font-weight: 600; color: var(--white); }
+
+    /* Formats */
+    #formats { background: var(--dark); }
+    .formats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+    .format-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; text-align: center; transition: all 0.3s; }
+    .format-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); border-color: var(--orange); }
+    .format-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+    .format-card h3 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; color: var(--white); margin-bottom: 0.6rem; }
+    .format-card p { color: var(--gray); font-size: 0.86rem; line-height: 1.7; }
+    .format-list { list-style: none; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .format-list li { color: var(--gray); font-size: 0.82rem; padding-left: 1.2rem; position: relative; text-align: left; }
+    .format-list li::before { content: '›'; color: var(--orange); position: absolute; left: 0; }
+
+    /* Pourquoi nos formations */
+    #why-formations { background: var(--black); }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .why-item { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 1.8rem; transition: all 0.3s; }
+    .why-item:hover { border-color: var(--green-light); transform: translateY(-3px); }
+    .why-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+    .why-item h4 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; text-transform: uppercase; color: var(--white); margin-bottom: 0.5rem; }
+    .why-item p { color: var(--gray); font-size: 0.86rem; line-height: 1.65; }
+
+    #cta-band { background: linear-gradient(135deg, var(--green) 0%, #1E4023 50%, #1A1500 100%); padding: 70px 5%; }
+    .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+    .cta-text h2 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.8rem); text-transform: uppercase; line-height: 1.05; margin-bottom: 0.75rem; color: #FFFFFF; }
+    .cta-text p { color: rgba(242,243,238,0.75); max-width: 500px; }
+    .btn-white { background: white; color: #0C0D0B; padding: 16px 36px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; white-space: nowrap; }
+    .btn-white:hover { background: var(--orange); color: white; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+    .btn-primary { background: var(--orange); color: white; padding: 14px 32px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; border: 2px solid var(--orange); }
+    .btn-primary:hover { background: transparent; color: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,101,26,0.3); }
+    .btn-outline { background: transparent; color: var(--white); padding: 14px 32px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; border: 2px solid var(--border); }
+    .btn-outline:hover { border-color: var(--green-light); color: var(--green-light); transform: translateY(-2px); }
+
+    footer { background: var(--black); padding: 60px 5% 30px; border-top: 1px solid var(--border); }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-brand p { color: var(--gray); font-size: 0.88rem; line-height: 1.7; margin-top: 1rem; max-width: 280px; }
+    .footer-col h5 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.86rem; transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+    .footer-links a::before { content: '›'; color: var(--orange); font-size: 1rem; line-height: 1; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { color: #7A8470; font-size: 0.8rem; }
+    .footer-bottom span { color: var(--orange); }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link { width: 36px; height: 36px; background: var(--dark2); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.9rem; color: var(--gray); transition: all 0.2s; }
+    .social-link:hover { background: var(--orange); border-color: var(--orange); color: white; transform: translateY(-2px); }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .catalogue-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .formats-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-col:nth-child(2), .footer-col:nth-child(3) { display: none; }
+      .formats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="elektra-ifs-site.html" class="nav-logo">
+      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+      <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="elektra-ifs-site.html#domaines">Domaines</a></li>
+      <li><a href="#catalogue">Formations</a></li>
+      <li><a href="elektra-ifs-site.html#ateliers">Ateliers</a></li>
+      <li><a href="elektra-ifs-site.html#why">Pourquoi nous</a></li>
+      <li><a href="elektra-ifs-site.html#contact">Contact</a></li>
+      <li><a href="elektra-ifs-site.html#contact" class="nav-cta">S'inscrire</a></li>
+    </ul>
+  </nav>
+
+  <div id="page-hero">
+    <div class="breadcrumb">
+      <a href="elektra-ifs-site.html">Accueil</a>
+      <span>›</span>
+      <span>Formations & Services</span>
+    </div>
+    <div class="page-hero-tag">🎓 Formation continue & Intra-entreprise</div>
+    <h1 class="page-hero-title">
+      <span class="accent">Formations</span><br/>
+      <span class="accent-green">&amp;</span> Services
+    </h1>
+    <p class="page-hero-desc">
+      Programmes de formation continue sur mesure pour techniciens et ingénieurs. Automatisme, électrotechnique, instrumentation, SCADA et énergies renouvelables. Formations intra-entreprise, inter-entreprise et e-learning — à Abidjan ou dans toute la sous-région.
+    </p>
+    <div class="page-hero-actions">
+      <a href="elektra-ifs-site.html#contact" class="btn-primary">S'inscrire à une formation</a>
+      <a href="#catalogue" class="btn-outline">Voir le catalogue</a>
+    </div>
+    <div class="page-hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">150<span>+</span></span>
+        <span class="stat-label">Formations dispensées</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">6</span>
+        <span class="stat-label">Thématiques</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100<span>%</span></span>
+        <span class="stat-label">Approche pratique</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">B2B</span>
+        <span class="stat-label">Intra-entreprise</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATALOGUE -->
+  <section id="catalogue">
+    <div class="catalogue-header">
+      <div>
+        <div class="section-label">01 — Catalogue</div>
+        <h2 class="section-title">Nos formations<br/><span class="accent">techniques</span></h2>
+      </div>
+      <p class="catalogue-intro">
+        Toutes nos formations allient théorie et travaux pratiques sur équipements réels. Nos formateurs sont des professionnels actifs en ingénierie industrielle, garantissant des contenus actualisés et directement applicables en entreprise.
+      </p>
+    </div>
+    <div class="formations-grid reveal">
+      <div class="formation-card">
+        <span class="formation-tag tag-auto">Automatisme</span>
+        <h3>Programmation Automates Siemens S7-300/400/1200/1500</h3>
+        <p>Maîtrisez la programmation PLC avec Step 7 et TIA Portal. Des bases jusqu'aux applications avancées en langage LAD, FBD, SCL et GRAPH.</p>
+        <div class="formation-meta">
+          <div class="meta-item"><span class="meta-label">Durée</span><span class="meta-value">5 jours</span></div>
+          <div class="meta-item"><span class="meta-label">Niveau</span><span class="meta-value">Débutant–Avancé</span></div>
+          <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Présentiel</span></div>
+        </div>
+      </div>
+      <div class="formation-card">
+        <span class="formation-tag tag-scada">SCADA</span>
+        <h3>Supervision WinCC — Conception d'interfaces HMI</h3>
+        <p>Créez des interfaces de supervision industrielles performantes avec WinCC Runtime, WinCC Flexible et SCADA avancé pour le contrôle de process.</p>
+        <div class="formation-meta">
+          <div class="meta-item"><span class="meta-label">Durée</span><span class="meta-value">3 jours</span></div>
+          <div class="meta-item"><span class="meta-label">Niveau</span><span class="meta-value">Intermédiaire</span></div>
+          <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Présentiel</span></div>
+        </div>
+      </div>
+      <div class="formation-card">
+        <span class="formation-tag tag-instr">Instrumentation</span>
+        <h3>Instrumentation Industrielle & Boucles de Régulation</h3>
+        <p>Capteurs, transmetteurs, vannes de régulation et boucles PID. Calibration, étalonnage et maintenance des instruments de mesure industriels.</p>
+        <div class="formation-meta">
+          <div class="meta-item"><span class="meta-label">Durée</span><span class="meta-value">4 jours</span></div>
+          <div class="meta-item"><span class="meta-label">Niveau</span><span class="meta-value">Tous niveaux</span></div>
+          <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Mixte</span></div>
+        </div>
+      </div>
+      <div class="formation-card">
+        <span class="formation-tag tag-energy">Énergies</span>
+        <h3>Systèmes Photovoltaïques — Dimensionnement & Installation</h3>
+        <p>Dimensionnement off-grid, on-grid et hybride. Choix des composants, installation électrique, et intégration de batteries LiFePO4 et systèmes de gestion.</p>
+        <div class="formation-meta">
+          <div class="meta-item"><span class="meta-label">Durée</span><span class="meta-value">5 jours</span></div>
+          <div class="meta-item"><span class="meta-label">Niveau</span><span class="meta-value">Débutant–Avancé</span></div>
+          <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Mixte</span></div>
+        </div>
+      </div>
+      <div class="formation-card">
+        <span class="formation-tag tag-elec">Électrotechnique</span>
+        <h3>Câblage & Schémas Électriques Industriels</h3>
+        <p>Lecture et réalisation de schémas électriques, câblage d'armoires industrielles, protection des circuits et conformité aux normes NF EN.</p>
+        <div class="formation-meta">
+          <div class="meta-item"><span class="meta-label">Durée</span><span class="meta-value">3 jours</span></div>
+          <div class="meta-item"><span class="meta-label">Niveau</span><span class="meta-value">Débutant</span></div>
+          <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Présentiel</span></div>
+        </div>
+      </div>
+      <div class="formation-card">
+        <span class="formation-tag tag-maint">Maintenance</span>
+        <h3>Maintenance Préventive & Diagnostic de Pannes</h3>
+        <p>Méthodologies AMDEC, plans de maintenance, diagnostic électrique et mécanique. Réduire les arrêts non planifiés et optimiser la disponibilité des équipements.</p>
+        <div class="formation-meta">
+          <div class="meta-item"><span class="meta-label">Durée</span><span class="meta-value">4 jours</span></div>
+          <div class="meta-item"><span class="meta-label">Niveau</span><span class="meta-value">Intermédiaire</span></div>
+          <div class="meta-item"><span class="meta-label">Format</span><span class="meta-value">Présentiel</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATS -->
+  <section id="formats">
+    <div class="section-label">02 — Modalités</div>
+    <h2 class="section-title">Formats de<br/><span class="accent-green">formation</span></h2>
+    <div class="formats-grid reveal">
+      <div class="format-card">
+        <span class="format-icon">🏢</span>
+        <h3>Intra-entreprise</h3>
+        <p>Formation dispensée directement dans vos locaux. Programme adapté à votre secteur, vos équipements et vos objectifs.</p>
+        <ul class="format-list">
+          <li>Contenu sur mesure</li>
+          <li>Sur votre site ou chez nous</li>
+          <li>Jusqu'à 12 participants</li>
+          <li>Dates flexibles</li>
+        </ul>
+      </div>
+      <div class="format-card">
+        <span class="format-icon">👥</span>
+        <h3>Inter-entreprise</h3>
+        <p>Sessions ouvertes à des participants de différentes entreprises. Calendrier fixe, échanges enrichissants entre professionnels.</p>
+        <ul class="format-list">
+          <li>Sessions planifiées</li>
+          <li>5 à 8 participants max</li>
+          <li>Centre de formation ELEKTRA</li>
+          <li>Attestation de formation</li>
+        </ul>
+      </div>
+      <div class="format-card">
+        <span class="format-icon">💻</span>
+        <h3>E-learning & Hybride</h3>
+        <p>Modules en ligne suivis d'une session pratique. Flexibilité pour les équipes dispersées géographiquement.</p>
+        <ul class="format-list">
+          <li>Accès 24h/24</li>
+          <li>Modules vidéo interactifs</li>
+          <li>TP en présentiel</li>
+          <li>Suivi personnalisé</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI NOS FORMATIONS -->
+  <section id="why-formations">
+    <div class="section-label">03 — Différenciation</div>
+    <h2 class="section-title">Pourquoi nous<br/><span class="accent">choisir</span></h2>
+    <div class="why-grid reveal">
+      <div class="why-item">
+        <span class="why-icon">🛠️</span>
+        <h4>100% Pratique</h4>
+        <p>Chaque formation inclut des travaux pratiques sur équipements industriels réels : automates Siemens, tableaux électriques, instruments de mesure.</p>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">👨‍🏫</span>
+        <h4>Formateurs Experts</h4>
+        <p>Nos formateurs sont des ingénieurs et techniciens actifs. Ils transmettent des compétences directement issues du terrain industriel ivoirien.</p>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">📍</span>
+        <h4>Contexte Local</h4>
+        <p>Formations pensées pour les entreprises de Côte d'Ivoire et d'Afrique de l'Ouest : exemples concrets, équipements présents sur le marché local.</p>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">📜</span>
+        <h4>Attestation Officielle</h4>
+        <p>Chaque participant reçoit une attestation de formation signée par ELEKTRA IFS, valorisable sur votre CV et auprès de votre employeur.</p>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">🔄</span>
+        <h4>Suivi Post-Formation</h4>
+        <p>Accès aux supports de cours, assistance technique par email pendant 30 jours après la formation et ressources complémentaires en ligne.</p>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">⚡</span>
+        <h4>Réactivité</h4>
+        <p>Organisation rapide en intra-entreprise. Devis sous 24h, planning établi en moins d'une semaine selon vos contraintes opérationnelles.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="cta-band">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Prêt à former<br/>vos équipes ?</h2>
+        <p>Contactez-nous pour un programme personnalisé. Intra-entreprise, sur mesure, à Abidjan ou en région.</p>
+      </div>
+      <a href="elektra-ifs-site.html#contact" class="btn-white">Demander un devis</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="elektra-ifs-site.html" class="nav-logo" style="text-decoration:none;">
+          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+          <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+        </a>
+        <p>Ingénierie Industrielle · Formations · Services. Nous rendons les systèmes complexes accessibles à tous les professionnels.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Domaines</h5>
+        <ul class="footer-links">
+          <li><a href="ingenierie-industrielle.html">Ingénierie industrielle</a></li>
+          <li><a href="maintenance-industrielle.html">Maintenance</a></li>
+          <li><a href="fabrication-machines.html">Fabrication machines</a></li>
+          <li><a href="formations-services.html">Formations & Services</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Formations</h5>
+        <ul class="footer-links">
+          <li><a href="#catalogue">Automatisme PLC</a></li>
+          <li><a href="#catalogue">SCADA WinCC</a></li>
+          <li><a href="#catalogue">Instrumentation</a></li>
+          <li><a href="#catalogue">Énergies solaires</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul class="footer-links">
+          <li><a href="elektra-ifs-site.html#contact">Nous contacter</a></li>
+          <li><a href="elektra-ifs-site.html#ateliers">Ateliers pratiques</a></li>
+          <li><a href="elektra-ifs-site.html">Accueil</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>ELEKTRA IFS</span> · Tous droits réservés · Abidjan, Côte d'Ivoire</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/ELEKTRACI" class="social-link" target="_blank" title="Facebook">f</a>
+        <a href="https://www.linkedin.com/company/elektra-ing%C3%A9nierie-et-formation/" class="social-link" target="_blank" title="LinkedIn">in</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

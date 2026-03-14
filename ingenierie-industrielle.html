@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingénierie Industrielle | ELEKTRA IFS – Abidjan</title>
+  <meta name="description" content="Bureau d'études spécialisé en automatisme, instrumentation et systèmes de contrôle-commande. Conception et mise en œuvre de systèmes industriels à Abidjan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:    #FFFFFF;
+      --dark:     #F2F4EF;
+      --dark2:    #E8EBE3;
+      --green:    #2D6A35;
+      --green-light: #2D6A35;
+      --green-dim: rgba(45,106,53,0.12);
+      --orange:   #E8651A;
+      --orange-light: #F47B30;
+      --orange-dim: rgba(232,101,26,0.12);
+      --white:    #1A1C18;
+      --gray:     #5A6450;
+      --border:   rgba(0,0,0,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.15;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      padding: 0 5%;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      height: 60px;
+      background: rgba(255,255,255,0.99);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px; text-decoration: none;
+    }
+    .nav-logo-img {
+      width: 42px; height: 42px; object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(232,101,26,0.3));
+      transition: filter 0.3s ease;
+    }
+    .nav-logo:hover .nav-logo-img { filter: drop-shadow(0 0 10px rgba(232,101,26,0.5)); }
+    .nav-logo-text {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 1.25rem; letter-spacing: 2px; color: var(--white);
+    }
+    .nav-logo-text span { color: var(--orange); }
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--gray); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+      transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--orange); color: white !important;
+      padding: 8px 20px; border-radius: 4px;
+      font-weight: 600 !important; transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* ─── PAGE HERO ─── */
+    #page-hero {
+      position: relative;
+      padding: 140px 5% 80px;
+      overflow: hidden;
+      background: var(--dark);
+    }
+    #page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(45,106,53,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,106,53,0.08) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridPan 20s linear infinite;
+    }
+    #page-hero::after {
+      content: '';
+      position: absolute; top: 50%; right: 10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(45,106,53,0.15) 0%, transparent 70%);
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    @keyframes gridPan {
+      0% { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+    .breadcrumb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--gray);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 8px;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.5s ease both;
+    }
+    .breadcrumb a { color: var(--orange); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green-dim); border: 1px solid rgba(45,106,53,0.4);
+      padding: 6px 16px; border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: var(--green-light); letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 1.5rem; width: fit-content;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s 0.05s ease both;
+    }
+    .page-hero-title {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 0.95; letter-spacing: -1px; text-transform: uppercase;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .page-hero-title .accent { color: var(--green-light); }
+    .page-hero-title .accent-orange { color: var(--orange); }
+    .page-hero-desc {
+      max-width: 620px; color: #4A5442; font-size: 1.05rem;
+      line-height: 1.7; margin-top: 1.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .page-hero-actions {
+      display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .page-hero-stats {
+      display: flex; gap: 3rem; margin-top: 3.5rem;
+      padding-top: 2rem; border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+      animation: fadeUp 0.7s 0.4s ease both;
+      flex-wrap: wrap;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 2rem; color: var(--white); line-height: 1;
+    }
+    .stat-num span { color: var(--orange); }
+    .stat-label { font-size: 0.75rem; color: var(--gray); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 90px 5%; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: var(--orange); letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 1rem; display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: ''; display: inline-block; width: 30px; height: 2px; background: var(--orange);
+    }
+    .section-title {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3rem); text-transform: uppercase;
+      letter-spacing: -0.5px; line-height: 1.05;
+    }
+    .section-title .accent { color: var(--green-light); }
+    .section-title .accent-orange { color: var(--orange); }
+
+    /* ─── SERVICES GRID ─── */
+    #services { background: var(--black); }
+    .services-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start; margin-bottom: 4rem;
+    }
+    .services-intro-text { color: var(--gray); font-size: 1rem; line-height: 1.8; margin-top: 1.5rem; }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--dark2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 2rem;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 0; background: linear-gradient(180deg, var(--green), var(--orange));
+      transition: height 0.4s ease;
+    }
+    .service-card:hover::before { height: 100%; }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); background: var(--dark); }
+    .service-icon {
+      width: 48px; height: 48px; background: var(--green-dim);
+      border: 1px solid rgba(45,106,53,0.3); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.2rem; transition: all 0.3s;
+    }
+    .service-card:hover .service-icon { background: var(--orange-dim); border-color: rgba(232,101,26,0.4); }
+    .service-card h3 {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 1.1rem; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+    .service-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.65; }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+    .service-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      color: var(--green-light); background: var(--green-dim);
+      border: 1px solid rgba(45,106,53,0.3); padding: 3px 10px;
+      border-radius: 100px; letter-spacing: 0.5px;
+    }
+
+    /* ─── PROCESS ─── */
+    #process { background: var(--dark); }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0; margin-top: 4rem;
+      border: 1.5px solid var(--border);
+    }
+    .process-step {
+      padding: 2.5rem 2rem; border-right: 1.5px solid var(--border);
+      position: relative; transition: background 0.3s;
+    }
+    .process-step:last-child { border-right: none; }
+    .process-step:hover { background: var(--dark2); }
+    .step-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      color: var(--orange); letter-spacing: 2px; margin-bottom: 1rem; display: block;
+    }
+    .process-step h4 {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+    .process-step p { color: var(--gray); font-size: 0.86rem; line-height: 1.6; }
+
+    /* ─── TECHNOLOGIES ─── */
+    #technologies { background: var(--black); }
+    .tech-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-top: 3rem;
+    }
+    .tech-item {
+      background: var(--dark2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+    .tech-item:hover { border-color: var(--green-light); transform: translateY(-2px); }
+    .tech-item-category {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      color: var(--orange); letter-spacing: 2px; text-transform: uppercase;
+    }
+    .tech-item-name {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 1rem; text-transform: uppercase; color: var(--white);
+    }
+    .tech-item-desc { color: var(--gray); font-size: 0.8rem; }
+
+    /* ─── CTA BAND ─── */
+    #cta-band {
+      background: linear-gradient(135deg, var(--green) 0%, #1E4023 50%, #1A1500 100%);
+      padding: 70px 5%;
+    }
+    .cta-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 3rem; flex-wrap: wrap;
+    }
+    .cta-text h2 {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem); text-transform: uppercase;
+      line-height: 1.05; margin-bottom: 0.75rem; color: #FFFFFF;
+    }
+    .cta-text p { color: rgba(242,243,238,0.75); max-width: 500px; }
+    .btn-white {
+      background: white; color: #0C0D0B; padding: 16px 36px; border-radius: 4px;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 1rem; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.25s ease; white-space: nowrap;
+    }
+    .btn-white:hover { background: var(--orange); color: white; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+    /* ─── BUTTONS ─── */
+    .btn-primary {
+      background: var(--orange); color: white; padding: 14px 32px; border-radius: 4px;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem;
+      letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+      transition: all 0.25s ease; border: 2px solid var(--orange);
+    }
+    .btn-primary:hover { background: transparent; color: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,101,26,0.3); }
+    .btn-outline {
+      background: transparent; color: var(--white); padding: 14px 32px; border-radius: 4px;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem;
+      letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+      transition: all 0.25s ease; border: 2px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--green-light); color: var(--green-light); transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--black); padding: 60px 5% 30px; border-top: 1px solid var(--border); }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem; margin-bottom: 3rem;
+    }
+    .footer-brand p { color: var(--gray); font-size: 0.88rem; line-height: 1.7; margin-top: 1rem; max-width: 280px; }
+    .footer-col h5 {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--white);
+      margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a {
+      color: var(--gray); text-decoration: none; font-size: 0.86rem;
+      transition: color 0.2s; display: flex; align-items: center; gap: 8px;
+    }
+    .footer-links a::before { content: '›'; color: var(--orange); font-size: 1rem; line-height: 1; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { color: #7A8470; font-size: 0.8rem; }
+    .footer-bottom span { color: var(--orange); }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link {
+      width: 36px; height: 36px; background: var(--dark2); border: 1px solid var(--border);
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 0.9rem; color: var(--gray); transition: all 0.2s;
+    }
+    .social-link:hover { background: var(--orange); border-color: var(--orange); color: white; transform: translateY(-2px); }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .services-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step { border-right: none; border-bottom: 1.5px solid var(--border); }
+      .process-step:last-child { border-bottom: none; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-col:nth-child(2), .footer-col:nth-child(3) { display: none; }
+      .process-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav id="navbar">
+    <a href="elektra-ifs-site.html" class="nav-logo">
+      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+      <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="elektra-ifs-site.html#domaines">Domaines</a></li>
+      <li><a href="elektra-ifs-site.html#formations">Formations</a></li>
+      <li><a href="elektra-ifs-site.html#ateliers">Ateliers</a></li>
+      <li><a href="elektra-ifs-site.html#why">Pourquoi nous</a></li>
+      <li><a href="elektra-ifs-site.html#contact">Contact</a></li>
+      <li><a href="elektra-ifs-site.html#contact" class="nav-cta">Nous contacter</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══ PAGE HERO ═══ -->
+  <div id="page-hero">
+    <div class="breadcrumb">
+      <a href="elektra-ifs-site.html">Accueil</a>
+      <span>›</span>
+      <span>Ingénierie Industrielle</span>
+    </div>
+    <div class="page-hero-tag">⚙️ Bureau d'études & Automatisme</div>
+    <h1 class="page-hero-title">
+      <span class="accent">Ingénierie</span><br/>
+      Industrielle
+    </h1>
+    <p class="page-hero-desc">
+      Conception, étude et mise en œuvre de systèmes automatisés. Notre bureau d'études spécialisé intervient en automatisme, instrumentation et systèmes de contrôle-commande pour l'ensemble de l'industrie ivoirienne et sous-régionale.
+    </p>
+    <div class="page-hero-actions">
+      <a href="elektra-ifs-site.html#contact" class="btn-primary">Démarrer un projet</a>
+      <a href="#services" class="btn-outline">Nos services</a>
+    </div>
+    <div class="page-hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">50<span>+</span></span>
+        <span class="stat-label">Projets réalisés</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Spécialités</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">48<span>h</span></span>
+        <span class="stat-label">Délai de réponse</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100<span>%</span></span>
+        <span class="stat-label">Sur mesure</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SERVICES ═══ -->
+  <section id="services">
+    <div class="services-intro">
+      <div>
+        <div class="section-label">01 — Expertise</div>
+        <h2 class="section-title">Ce que nous<br/><span class="accent">réalisons</span></h2>
+      </div>
+      <p class="services-intro-text">
+        ELEKTRA IFS intervient sur l'ensemble du cycle de vie de vos installations industrielles : de l'étude de faisabilité à la mise en service, en passant par la conception détaillée et la programmation. Chaque projet est traité avec rigueur et adapté à votre secteur d'activité.
+      </p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🖥️</div>
+        <h3>Automatisme & Programmation PLC</h3>
+        <p>Développement de programmes automates pour les principales marques du marché. Logique combinatoire, séquentielle, régulation et communication réseau industriel.</p>
+        <div class="service-tags">
+          <span class="service-tag">Siemens S7</span>
+          <span class="service-tag">TIA Portal</span>
+          <span class="service-tag">Schneider</span>
+          <span class="service-tag">Allen-Bradley</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📊</div>
+        <h3>Supervision SCADA & HMI</h3>
+        <p>Conception d'interfaces de supervision pour la visualisation et le contrôle de vos processus industriels en temps réel. Tableaux de bord, alarmes, historiques.</p>
+        <div class="service-tags">
+          <span class="service-tag">WinCC</span>
+          <span class="service-tag">FactoryTalk</span>
+          <span class="service-tag">Ignition</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎛️</div>
+        <h3>Instrumentation & Capteurs</h3>
+        <p>Sélection, installation et calibration des instruments de mesure : température, pression, débit, niveau, vibrations. Boucles de régulation et calibration terrain.</p>
+        <div class="service-tags">
+          <span class="service-tag">4–20 mA</span>
+          <span class="service-tag">HART</span>
+          <span class="service-tag">PROFIBUS</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🗂️</div>
+        <h3>Bureau d'Études Électriques</h3>
+        <p>Réalisation de schémas électriques industriels, plans d'implantation, listes de câbles et notes de calcul. Dossiers techniques complets conformes aux normes CEI.</p>
+        <div class="service-tags">
+          <span class="service-tag">EPLAN</span>
+          <span class="service-tag">AutoCAD Elec</span>
+          <span class="service-tag">NF EN</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔌</div>
+        <h3>Armoires de Contrôle-Commande</h3>
+        <p>Conception et câblage d'armoires électriques industrielles : câblage d'automates, variateurs, disjoncteurs moteurs, relais de sécurité et réseaux de terrain.</p>
+        <div class="service-tags">
+          <span class="service-tag">Câblage</span>
+          <span class="service-tag">Variateurs</span>
+          <span class="service-tag">Sécurité</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏗️</div>
+        <h3>Mise en Service & Assistance</h3>
+        <p>Démarrage et tests des installations sur site, formation des équipes opérateurs et maintenance, rédaction des manuels d'utilisation et dossiers de récolement.</p>
+        <div class="service-tags">
+          <span class="service-tag">FAT / SAT</span>
+          <span class="service-tag">Formation</span>
+          <span class="service-tag">Documentation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROCESSUS ═══ -->
+  <section id="process">
+    <div class="section-label">02 — Méthodologie</div>
+    <h2 class="section-title">Notre processus<br/><span class="accent">de travail</span></h2>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 01</span>
+        <h4>Analyse & Cahier des charges</h4>
+        <p>Étude de votre besoin, audit de l'existant, définition des performances et des contraintes. Rédaction du cahier des charges fonctionnel.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 02</span>
+        <h4>Conception & Études</h4>
+        <p>Architecture système, choix des équipements, réalisation des schémas électriques et de la documentation technique de conception.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 03</span>
+        <h4>Réalisation & Programmation</h4>
+        <p>Câblage des armoires, développement des programmes automates et des interfaces de supervision selon les standards définis.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 04</span>
+        <h4>Mise en Service & Formation</h4>
+        <p>Tests FAT en atelier, mise en service sur site, formation des équipes et remise du dossier technique complet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TECHNOLOGIES ═══ -->
+  <section id="technologies">
+    <div class="section-label">03 — Équipements</div>
+    <h2 class="section-title">Technologies<br/><span class="accent-orange">maîtrisées</span></h2>
+    <div class="tech-grid reveal">
+      <div class="tech-item">
+        <span class="tech-item-category">Automates</span>
+        <span class="tech-item-name">Siemens S7-300 / 400 / 1200 / 1500</span>
+        <span class="tech-item-desc">Step 7, TIA Portal, Profinet/Profibus</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">Automates</span>
+        <span class="tech-item-name">Schneider Modicon M340 / M580</span>
+        <span class="tech-item-desc">Unity Pro, EcoStruxure, Modbus TCP</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">SCADA</span>
+        <span class="tech-item-name">Siemens WinCC / WinCC Flexible</span>
+        <span class="tech-item-desc">Runtime, scripts VBS, OPC-UA</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">SCADA</span>
+        <span class="tech-item-name">Ignition by Inductive Automation</span>
+        <span class="tech-item-desc">MQTT, SQL, reporting avancé</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">Réseaux</span>
+        <span class="tech-item-name">Profibus / Profinet / Modbus</span>
+        <span class="tech-item-desc">Industrial Ethernet, DeviceNet</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">Bureau d'études</span>
+        <span class="tech-item-name">EPLAN Electric P8</span>
+        <span class="tech-item-desc">Schémas, listes de câbles, rapports</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">Variateurs</span>
+        <span class="tech-item-name">Siemens Sinamics / ABB ACS</span>
+        <span class="tech-item-desc">Variateurs de vitesse, softstarters</span>
+      </div>
+      <div class="tech-item">
+        <span class="tech-item-category">Sécurité</span>
+        <span class="tech-item-name">Relais & PLC de sécurité</span>
+        <span class="tech-item-desc">SIL 2/3, EN 62061, ISO 13849</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <div id="cta-band">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Un projet<br/>d'automatisation ?</h2>
+        <p>Discutons de votre besoin. Notre bureau d'études vous accompagne de la conception à la mise en service.</p>
+      </div>
+      <a href="elektra-ifs-site.html#contact" class="btn-white">Demander un devis</a>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="elektra-ifs-site.html" class="nav-logo" style="text-decoration:none;">
+          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+          <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+        </a>
+        <p>Ingénierie Industrielle · Formations · Services. Nous rendons les systèmes complexes accessibles à tous les professionnels.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Domaines</h5>
+        <ul class="footer-links">
+          <li><a href="ingenierie-industrielle.html">Ingénierie industrielle</a></li>
+          <li><a href="maintenance-industrielle.html">Maintenance</a></li>
+          <li><a href="fabrication-machines.html">Fabrication machines</a></li>
+          <li><a href="formations-services.html">Formations & Services</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Formations</h5>
+        <ul class="footer-links">
+          <li><a href="formations-services.html">Automatisme PLC</a></li>
+          <li><a href="formations-services.html">SCADA WinCC</a></li>
+          <li><a href="formations-services.html">Instrumentation</a></li>
+          <li><a href="formations-services.html">Énergies solaires</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul class="footer-links">
+          <li><a href="elektra-ifs-site.html#contact">Nous contacter</a></li>
+          <li><a href="elektra-ifs-site.html#ateliers">Ateliers pratiques</a></li>
+          <li><a href="elektra-ifs-site.html">Accueil</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>ELEKTRA IFS</span> · Tous droits réservés · Abidjan, Côte d'Ivoire</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/ELEKTRACI" class="social-link" target="_blank" title="Facebook">f</a>
+        <a href="https://www.linkedin.com/company/elektra-ing%C3%A9nierie-et-formation/" class="social-link" target="_blank" title="LinkedIn">in</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

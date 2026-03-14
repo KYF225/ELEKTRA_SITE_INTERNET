@@ -1,0 +1,14 @@
+# Claude Code config (local only)
+.claude/
+
+# Utility scripts (not part of the site)
+fix_logo.py
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp

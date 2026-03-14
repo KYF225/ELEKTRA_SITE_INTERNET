@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E/S Analogiques 4-20 mA & 0-10 V | Atelier Pratique ELEKTRA IFS</title>
+  <meta name="description" content="Atelier pratique 5h : comprendre, câbler et mettre en service des signaux analogiques 4-20 mA et 0-10 V sur automate et variateur. 20.000 FCFA. Abidjan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #FFFFFF; --dark: #F2F4EF; --dark2: #E8EBE3;
+      --green: #2D6A35; --green-light: #2D6A35; --green-dim: rgba(45,106,53,0.12);
+      --orange: #E8651A; --orange-light: #F47B30; --orange-dim: rgba(232,101,26,0.12);
+      --white: #1A1C18; --gray: #5A6450; --border: rgba(0,0,0,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Outfit', sans-serif; line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.15; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; padding: 0 5%; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
+    nav.scrolled { height: 60px; background: rgba(255,255,255,0.99); box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-img { width: 42px; height: 42px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(232,101,26,0.3)); }
+    .nav-logo-text { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 2px; color: var(--white); }
+    .nav-logo-text span { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { background: var(--orange); color: white !important; padding: 8px 20px; border-radius: 4px; font-weight: 600 !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; }
+    .nav-cta::after { display: none !important; }
+
+    #page-hero { position: relative; padding: 140px 5% 80px; overflow: hidden; background: var(--dark); }
+    #page-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(232,101,26,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(45,106,53,0.07) 1px, transparent 1px); background-size: 60px 60px; animation: gridPan 20s linear infinite; }
+    #page-hero::after { content: ''; position: absolute; top: 50%; right: 5%; width: 420px; height: 420px; background: radial-gradient(circle, rgba(232,101,26,0.1) 0%, transparent 70%); transform: translateY(-50%); pointer-events: none; }
+    @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    .breadcrumb { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; animation: fadeUp 0.5s ease both; }
+    .breadcrumb a { color: var(--orange); text-decoration: none; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; position: relative; z-index: 1; animation: fadeUp 0.6s 0.05s ease both; }
+    .hero-badge-item { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 100px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; }
+    .badge-type { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(232,101,26,0.35); }
+    .badge-date { background: var(--green-dim); color: var(--green-light); border: 1px solid rgba(45,106,53,0.35); }
+    .badge-duration { background: rgba(90,100,80,0.1); color: var(--gray); border: 1px solid var(--border); }
+    .page-hero-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(2.2rem, 5.5vw, 4.5rem); line-height: 0.97; letter-spacing: -1px; text-transform: uppercase; position: relative; z-index: 1; animation: fadeUp 0.7s 0.1s ease both; }
+    .page-hero-title .accent { color: var(--orange); }
+    .page-hero-desc { max-width: 640px; color: #4A5442; font-size: 1rem; line-height: 1.75; margin-top: 1.5rem; position: relative; z-index: 1; animation: fadeUp 0.7s 0.2s ease both; }
+    .page-hero-actions { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; position: relative; z-index: 1; animation: fadeUp 0.7s 0.3s ease both; }
+    .price-block { display: flex; align-items: center; gap: 0.5rem; margin-top: 2rem; position: relative; z-index: 1; animation: fadeUp 0.7s 0.4s ease both; }
+    .price-amount { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 2.2rem; color: var(--orange); line-height: 1; }
+    .price-label { color: var(--gray); font-size: 0.85rem; }
+
+    section { padding: 80px 5%; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--orange); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 12px; }
+    .section-label::before { content: ''; display: inline-block; width: 30px; height: 2px; background: var(--orange); }
+    .section-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.6rem); text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 2.5rem; }
+    .section-title .accent { color: var(--green-light); }
+    .section-title .accent-orange { color: var(--orange); }
+
+    #resume { background: var(--black); }
+    .resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .resume-text { color: var(--gray); font-size: 1rem; line-height: 1.8; }
+    .resume-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .kpi-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; text-align: center; transition: all 0.3s; }
+    .kpi-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .kpi-value { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 2rem; color: var(--orange); line-height: 1; margin-bottom: 0.3rem; }
+    .kpi-label { font-size: 0.78rem; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; }
+
+    #objectifs { background: var(--dark); }
+    .objectifs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+    .objectif-item { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: all 0.25s; }
+    .objectif-item:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .objectif-num { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--orange); background: var(--orange-dim); border: 1px solid rgba(232,101,26,0.3); padding: 3px 9px; border-radius: 100px; white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+    .objectif-item p { color: var(--gray); font-size: 0.88rem; line-height: 1.6; }
+
+    #programme { background: var(--black); }
+    .programme-list { display: flex; flex-direction: column; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .programme-item { display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 1.5rem; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); transition: background 0.25s; }
+    .programme-item:last-child { border-bottom: none; }
+    .programme-item:hover { background: var(--dark); }
+    .prog-num { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.8rem; color: var(--dark2); line-height: 1; transition: color 0.25s; }
+    .programme-item:hover .prog-num { color: var(--orange); }
+    .prog-content h4 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--white); margin-bottom: 0.3rem; }
+    .prog-content p { color: var(--gray); font-size: 0.83rem; line-height: 1.5; }
+    .prog-sub { list-style: none; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .prog-sub li { color: var(--gray); font-size: 0.8rem; padding-left: 1rem; position: relative; }
+    .prog-sub li::before { content: '–'; color: var(--orange); position: absolute; left: 0; }
+    .prog-duration { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--orange); background: var(--orange-dim); border: 1px solid rgba(232,101,26,0.3); padding: 3px 10px; border-radius: 100px; white-space: nowrap; margin-top: 4px; }
+
+    #public-methodes { background: var(--dark); }
+    .pm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .pm-block h3 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--white); margin-bottom: 1.2rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .pm-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .pm-list li { color: var(--gray); font-size: 0.88rem; padding-left: 1.4rem; position: relative; line-height: 1.55; }
+    .pm-list li::before { content: '›'; color: var(--orange); position: absolute; left: 0; font-size: 1rem; line-height: 1.4; }
+    .pm-list li strong { color: var(--white); }
+
+    #atouts { background: var(--black); }
+    .atouts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+    .atout-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; transition: all 0.25s; }
+    .atout-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .atout-icon { font-size: 1.6rem; margin-bottom: 0.8rem; display: block; }
+    .atout-card p { color: var(--gray); font-size: 0.84rem; line-height: 1.6; }
+
+    #cta-band { background: linear-gradient(135deg, #1A1500 0%, #3D2800 50%, var(--orange) 100%); padding: 70px 5%; }
+    .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+    .cta-text h2 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.8rem); text-transform: uppercase; line-height: 1.05; margin-bottom: 0.75rem; color: #FFFFFF; }
+    .cta-text p { color: rgba(255,255,255,0.8); max-width: 500px; }
+    .cta-price { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.3rem; color: #FFE0B0; margin-top: 0.5rem; }
+
+    .btn-primary { background: var(--orange); color: white; padding: 14px 32px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: all 0.25s; border: 2px solid var(--orange); }
+    .btn-primary:hover { background: transparent; color: var(--orange); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--white); padding: 14px 32px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: all 0.25s; border: 2px solid var(--border); }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+    .btn-white { background: white; color: #0C0D0B; padding: 16px 36px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: all 0.25s; white-space: nowrap; }
+    .btn-white:hover { background: var(--white); color: white; transform: translateY(-2px); }
+
+    footer { background: var(--black); padding: 60px 5% 30px; border-top: 1px solid var(--border); }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-brand p { color: var(--gray); font-size: 0.88rem; line-height: 1.7; margin-top: 1rem; max-width: 280px; }
+    .footer-col h5 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.86rem; transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+    .footer-links a::before { content: '›'; color: var(--orange); font-size: 1rem; line-height: 1; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { color: #7A8470; font-size: 0.8rem; }
+    .footer-bottom span { color: var(--orange); }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link { width: 36px; height: 36px; background: var(--dark2); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.9rem; color: var(--gray); transition: all 0.2s; }
+    .social-link:hover { background: var(--orange); border-color: var(--orange); color: white; transform: translateY(-2px); }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .resume-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .pm-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .programme-item { grid-template-columns: 40px 1fr auto; gap: 1rem; padding: 1.2rem 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 60px 5%; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-col:nth-child(3), .footer-col:nth-child(4) { display: none; }
+      .programme-item { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="elektra-ifs-site.html" class="nav-logo">
+      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+      <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="elektra-ifs-site.html#domaines">Domaines</a></li>
+      <li><a href="elektra-ifs-site.html#formations">Formations</a></li>
+      <li><a href="elektra-ifs-site.html#ateliers">Ateliers</a></li>
+      <li><a href="elektra-ifs-site.html#contact">Contact</a></li>
+      <li><a href="elektra-ifs-site.html#contact" class="nav-cta">S'inscrire</a></li>
+    </ul>
+  </nav>
+
+  <div id="page-hero">
+    <div class="breadcrumb">
+      <a href="elektra-ifs-site.html">Accueil</a> <span>›</span>
+      <a href="elektra-ifs-site.html#ateliers">Ateliers pratiques</a> <span>›</span>
+      <span>E/S Analogiques</span>
+    </div>
+    <div class="hero-meta">
+      <span class="hero-badge-item badge-type">📡 Atelier pratique</span>
+      <span class="hero-badge-item badge-date">📅 6 Juin 2025</span>
+      <span class="hero-badge-item badge-duration">⏱ 5 heures</span>
+    </div>
+    <h1 class="page-hero-title">
+      Premiers pas avec les<br/>
+      <span class="accent">E/S Analogiques</span><br/>
+      4-20 mA & 0-10 V
+    </h1>
+    <p class="page-hero-desc">
+      Une demi-journée ultra-pratique (5h) pour comprendre, câbler et mettre en service des signaux analogiques 4-20 mA et 0-10 V sur automate et variateur. Parfait pour transformer la théorie en automatisme opérationnel dès le lendemain.
+    </p>
+    <div class="page-hero-actions">
+      <a href="elektra-ifs-site.html#contact" class="btn-primary">Participer à l'atelier</a>
+      <a href="#programme" class="btn-outline">Voir le programme</a>
+    </div>
+    <div class="price-block">
+      <span class="price-amount">20.000 FCFA</span>
+      <span class="price-label">/ participant &nbsp;·&nbsp; 30 Euros</span>
+    </div>
+  </div>
+
+  <section id="resume">
+    <div class="section-label">01 — Vue d'ensemble</div>
+    <div class="resume-grid reveal">
+      <div>
+        <h2 class="section-title">Pourquoi cet<br/><span class="accent-orange">atelier ?</span></h2>
+        <p class="resume-text">
+          Les signaux analogiques 4-20 mA et 0-10 V sont omniprésents dans l'industrie : capteurs de pression, de température, de débit, variateurs de vitesse… Pourtant, un mauvais raccordement ou une mauvaise configuration entraîne des lectures erronées ou des pannes inexpliquées. Cet atelier vous donne les outils concrets pour câbler, paramétrer et diagnostiquer ces signaux avec confiance.
+        </p>
+      </div>
+      <div class="resume-kpis">
+        <div class="kpi-card"><div class="kpi-value">70%</div><div class="kpi-label">Pratique terrain</div></div>
+        <div class="kpi-card"><div class="kpi-value">5h</div><div class="kpi-label">Durée session</div></div>
+        <div class="kpi-card"><div class="kpi-value">6</div><div class="kpi-label">Modules au programme</div></div>
+        <div class="kpi-card"><div class="kpi-value">30j</div><div class="kpi-label">Support post-formation</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="objectifs">
+    <div class="section-label">02 — Ce que vous apprendrez</div>
+    <h2 class="section-title">Objectifs<br/><span class="accent">pédagogiques</span></h2>
+    <div class="objectifs-grid reveal">
+      <div class="objectif-item"><span class="objectif-num">OBJ 01</span><p>Distinguer les principaux types de signaux analogiques industriels et leurs usages.</p></div>
+      <div class="objectif-item"><span class="objectif-num">OBJ 02</span><p>Réaliser un raccordement correct (transmetteur ↔ carte analogique) en toute sécurité.</p></div>
+      <div class="objectif-item"><span class="objectif-num">OBJ 03</span><p>Paramétrer le matériel (PLC/variateur) : plage, linéarisation, filtrage dans TIA Portal.</p></div>
+      <div class="objectif-item"><span class="objectif-num">OBJ 04</span><p>Vérifier la conformité du signal à l'aide d'un multimètre et d'un simulateur de boucle.</p></div>
+      <div class="objectif-item"><span class="objectif-num">OBJ 05</span><p>Diagnostiquer les défauts courants : boucle ouverte, inversion de polarité, parasites CEM.</p></div>
+    </div>
+  </section>
+
+  <section id="programme">
+    <div class="section-label">03 — Déroulé de la journée</div>
+    <h2 class="section-title">Programme condensé<br/><span class="accent">5 heures</span></h2>
+    <div class="programme-list reveal">
+      <div class="programme-item">
+        <div class="prog-num">01</div>
+        <div class="prog-content">
+          <h4>Fondamentaux</h4>
+          <ul class="prog-sub">
+            <li>Pourquoi deux normes ? Choix 4-20 mA vs 0-10 V.</li>
+            <li>Sources d'erreurs typiques : chute de tension, boucle de masse.</li>
+          </ul>
+        </div>
+        <span class="prog-duration">0h 45</span>
+      </div>
+      <div class="programme-item">
+        <div class="prog-num">02</div>
+        <div class="prog-content">
+          <h4>Câblage & Mise en service</h4>
+          <ul class="prog-sub">
+            <li>Raccordement d'un transmetteur 2 fils 4-20 mA.</li>
+            <li>Branchement d'un potentiomètre échelle 0-10 V.</li>
+          </ul>
+        </div>
+        <span class="prog-duration">1h 30</span>
+      </div>
+      <div class="programme-item">
+        <div class="prog-num">03</div>
+        <div class="prog-content">
+          <h4>Paramétrage automate</h4>
+          <ul class="prog-sub">
+            <li>Configuration carte AI/AO dans TIA Portal.</li>
+            <li>Conversion valeurs brutes ↔ ingénierie (scale/unscale).</li>
+          </ul>
+        </div>
+        <span class="prog-duration">1h 00</span>
+      </div>
+      <div class="programme-item">
+        <div class="prog-num">04</div>
+        <div class="prog-content">
+          <h4>Mesure & Calibration</h4>
+          <ul class="prog-sub">
+            <li>Utilisation simulateur de boucle, multimètre, pince mA.</li>
+            <li>Ajustement zéro/span sur transmetteur pressostat.</li>
+          </ul>
+        </div>
+        <span class="prog-duration">0h 45</span>
+      </div>
+      <div class="programme-item">
+        <div class="prog-num">05</div>
+        <div class="prog-content">
+          <h4>Diagnostic rapide</h4>
+          <ul class="prog-sub">
+            <li>Cas pratiques : parasite CEM, rupture boucle, alimentation instable.</li>
+          </ul>
+        </div>
+        <span class="prog-duration">0h 45</span>
+      </div>
+      <div class="programme-item">
+        <div class="prog-num">06</div>
+        <div class="prog-content">
+          <h4>Débrief & Q/A</h4>
+          <ul class="prog-sub">
+            <li>Recueil des besoins pour applications site client. Mini-quiz de validation.</li>
+          </ul>
+        </div>
+        <span class="prog-duration">0h 15</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="public-methodes">
+    <div class="section-label">04 — Public & Méthodes</div>
+    <h2 class="section-title">Pour qui &<br/><span class="accent">comment</span></h2>
+    <div class="pm-grid reveal">
+      <div class="pm-block">
+        <h3>Public visé & Prérequis</h3>
+        <ul class="pm-list">
+          <li>Techniciens électriciens, automaticiens débutants, ingénieurs de maintenance.</li>
+          <li>Connaissances de base en électricité BT (24 V DC, schéma unifilaire).</li>
+          <li>Notions d'entrée/sortie TOR recommandées (atelier câblage S7-1200 ou équivalent).</li>
+        </ul>
+      </div>
+      <div class="pm-block">
+        <h3>Méthodes pédagogiques</h3>
+        <ul class="pm-list">
+          <li><strong>70 % d'atelier "mains sur le coffret"</strong> : chaque participant câble et mesure sur maquette dédiée.</li>
+          <li>Démonstrations live projetées, suivies d'exercices individuels guidés.</li>
+          <li>Fiches-mémo et check-lists remises en fin de session.</li>
+          <li>Mini-quiz interactifs pour valider les acquis avant passation d'attestation.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="atouts">
+    <div class="section-label">05 — Nos atouts</div>
+    <h2 class="section-title">Pourquoi choisir<br/><span class="accent-orange">ELEKTRA IFS</span></h2>
+    <div class="atouts-grid reveal">
+      <div class="atout-card"><span class="atout-icon">🌍</span><p>Formateurs issus du terrain : <strong>plus de 10 ans</strong> d'intégration d'automatismes en Afrique de l'Ouest.</p></div>
+      <div class="atout-card"><span class="atout-icon">🔧</span><p>Plateformes didactiques mobiles <strong>Siemens/Schneider</strong>, calibrées pour 2 apprenants / poste.</p></div>
+      <div class="atout-card"><span class="atout-icon">📞</span><p>Support post-formation de <strong>30 jours</strong> (hotline mail & visio) inclus.</p></div>
+      <div class="atout-card"><span class="atout-icon">🎯</span><p>Possibilité d'adapter la maquette à <strong>vos capteurs/variateurs spécifiques</strong> pour un transfert immédiat sur site.</p></div>
+      <div class="atout-card"><span class="atout-icon">🎖️</span><p>Certification interne ELEKTRA + crédits pour parcours modulaires <strong>"Automation Pro"</strong>.</p></div>
+    </div>
+  </section>
+
+  <div id="cta-band">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Réservez votre place<br/>dès maintenant</h2>
+        <p>Session du 6 juin 2025 à Abidjan. Places limitées — inscrivez-vous avant le 30 mai 2025.</p>
+        <div class="cta-price">20.000 FCFA &nbsp;/&nbsp; 30 Euros par participant</div>
+      </div>
+      <a href="elektra-ifs-site.html#contact" class="btn-white">Participer à l'atelier →</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="elektra-ifs-site.html" class="nav-logo" style="text-decoration:none;">
+          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+          <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+        </a>
+        <p>Ingénierie Industrielle · Formations · Services. Nous rendons les systèmes complexes accessibles à tous les professionnels.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Ateliers</h5>
+        <ul class="footer-links">
+          <li><a href="atelier-cablage-s7-1200.html">Câblage S7-1200</a></li>
+          <li><a href="atelier-analogique-4-20ma.html">E/S Analogiques</a></li>
+          <li><a href="atelier-scada-wincc.html">SCADA WinCC</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Domaines</h5>
+        <ul class="footer-links">
+          <li><a href="ingenierie-industrielle.html">Ingénierie</a></li>
+          <li><a href="maintenance-industrielle.html">Maintenance</a></li>
+          <li><a href="formations-services.html">Formations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul class="footer-links">
+          <li><a href="elektra-ifs-site.html#contact">Nous contacter</a></li>
+          <li><a href="elektra-ifs-site.html">Accueil</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>ELEKTRA IFS</span> · Tous droits réservés · Abidjan, Côte d'Ivoire</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/ELEKTRACI" class="social-link" target="_blank">f</a>
+        <a href="https://www.linkedin.com/company/elektra-ing%C3%A9nierie-et-formation/" class="social-link" target="_blank">in</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+    const observer = new IntersectionObserver((e) => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }); }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

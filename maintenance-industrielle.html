@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maintenance Industrielle | ELEKTRA IFS – Abidjan</title>
+  <meta name="description" content="Diagnostic, maintenance préventive et corrective des équipements industriels. Réduction des temps d'arrêt et optimisation des performances à Abidjan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:    #FFFFFF;
+      --dark:     #F2F4EF;
+      --dark2:    #E8EBE3;
+      --green:    #2D6A35;
+      --green-light: #2D6A35;
+      --green-dim: rgba(45,106,53,0.12);
+      --orange:   #E8651A;
+      --orange-light: #F47B30;
+      --orange-dim: rgba(232,101,26,0.12);
+      --white:    #1A1C18;
+      --gray:     #5A6450;
+      --border:   rgba(0,0,0,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Outfit', sans-serif; font-weight: 400; line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.15; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; padding: 0 5%; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
+    nav.scrolled { height: 60px; background: rgba(255,255,255,0.99); box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-img { width: 42px; height: 42px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(232,101,26,0.3)); transition: filter 0.3s ease; }
+    .nav-logo:hover .nav-logo-img { filter: drop-shadow(0 0 10px rgba(232,101,26,0.5)); }
+    .nav-logo-text { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 2px; color: var(--white); }
+    .nav-logo-text span { color: var(--orange); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { background: var(--orange); color: white !important; padding: 8px 20px; border-radius: 4px; font-weight: 600 !important; transition: background 0.2s, transform 0.2s !important; }
+    .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    #page-hero { position: relative; padding: 140px 5% 80px; overflow: hidden; background: var(--dark); }
+    #page-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(232,101,26,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(232,101,26,0.06) 1px, transparent 1px); background-size: 60px 60px; animation: gridPan 20s linear infinite; }
+    #page-hero::after { content: ''; position: absolute; top: 50%; right: 10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(232,101,26,0.12) 0%, transparent 70%); transform: translateY(-50%); pointer-events: none; }
+    @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+    .breadcrumb { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; animation: fadeUp 0.5s ease both; }
+    .breadcrumb a { color: var(--orange); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .page-hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--orange-dim); border: 1px solid rgba(232,101,26,0.4); padding: 6px 16px; border-radius: 100px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--orange); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; width: fit-content; position: relative; z-index: 1; animation: fadeUp 0.6s 0.05s ease both; }
+    .page-hero-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; letter-spacing: -1px; text-transform: uppercase; position: relative; z-index: 1; animation: fadeUp 0.7s 0.1s ease both; }
+    .page-hero-title .accent { color: var(--orange); }
+    .page-hero-title .accent-green { color: var(--green-light); }
+    .page-hero-desc { max-width: 620px; color: #4A5442; font-size: 1.05rem; line-height: 1.7; margin-top: 1.5rem; position: relative; z-index: 1; animation: fadeUp 0.7s 0.2s ease both; }
+    .page-hero-actions { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; position: relative; z-index: 1; animation: fadeUp 0.7s 0.3s ease both; }
+    .page-hero-stats { display: flex; gap: 3rem; margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); position: relative; z-index: 1; animation: fadeUp 0.7s 0.4s ease both; flex-wrap: wrap; }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 2rem; color: var(--white); line-height: 1; }
+    .stat-num span { color: var(--orange); }
+    .stat-label { font-size: 0.75rem; color: var(--gray); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    section { padding: 90px 5%; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--orange); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 12px; }
+    .section-label::before { content: ''; display: inline-block; width: 30px; height: 2px; background: var(--orange); }
+    .section-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3rem); text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.05; }
+    .section-title .accent { color: var(--orange); }
+    .section-title .accent-green { color: var(--green-light); }
+
+    #services { background: var(--black); }
+    .services-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 4rem; }
+    .services-intro-text { color: var(--gray); font-size: 1rem; line-height: 1.8; margin-top: 1.5rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .service-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: linear-gradient(180deg, var(--orange), var(--green)); transition: height 0.4s ease; }
+    .service-card:hover::before { height: 100%; }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); background: var(--dark); }
+    .service-icon { width: 48px; height: 48px; background: var(--orange-dim); border: 1px solid rgba(232,101,26,0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1.2rem; transition: all 0.3s; }
+    .service-card:hover .service-icon { background: var(--green-dim); border-color: rgba(45,106,53,0.4); }
+    .service-card h3 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; text-transform: uppercase; color: var(--white); margin-bottom: 0.6rem; }
+    .service-card p { color: var(--gray); font-size: 0.88rem; line-height: 1.65; }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+    .service-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--orange); background: var(--orange-dim); border: 1px solid rgba(232,101,26,0.3); padding: 3px 10px; border-radius: 100px; letter-spacing: 0.5px; }
+
+    #process { background: var(--dark); }
+    .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; margin-top: 4rem; border: 1.5px solid var(--border); }
+    .process-step { padding: 2.5rem 2rem; border-right: 1.5px solid var(--border); position: relative; transition: background 0.3s; }
+    .process-step:last-child { border-right: none; }
+    .process-step:hover { background: var(--dark2); }
+    .step-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--orange); letter-spacing: 2px; margin-bottom: 1rem; display: block; }
+    .process-step h4 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--white); margin-bottom: 0.6rem; }
+    .process-step p { color: var(--gray); font-size: 0.86rem; line-height: 1.6; }
+
+    /* Types de maintenance */
+    #types { background: var(--black); }
+    .types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+    .type-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.3s; }
+    .type-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); }
+    .type-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 1.2rem; display: inline-block; }
+    .type-badge.preventive { background: var(--green-dim); color: var(--green-light); border: 1px solid rgba(45,106,53,0.3); }
+    .type-badge.corrective { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(232,101,26,0.3); }
+    .type-card h3 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.4rem; text-transform: uppercase; color: var(--white); margin-bottom: 0.8rem; }
+    .type-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.2rem; }
+    .type-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .type-list li { color: var(--gray); font-size: 0.86rem; padding-left: 1.2rem; position: relative; }
+    .type-list li::before { content: '›'; color: var(--orange); position: absolute; left: 0; }
+
+    #cta-band { background: linear-gradient(135deg, #1A1500 0%, #3D2800 50%, var(--orange) 100%); padding: 70px 5%; }
+    .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+    .cta-text h2 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.8rem); text-transform: uppercase; line-height: 1.05; margin-bottom: 0.75rem; color: #FFFFFF; }
+    .cta-text p { color: rgba(255,255,255,0.8); max-width: 500px; }
+    .btn-white { background: white; color: #0C0D0B; padding: 16px 36px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; white-space: nowrap; }
+    .btn-white:hover { background: var(--white); color: white; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+    .btn-primary { background: var(--orange); color: white; padding: 14px 32px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; border: 2px solid var(--orange); }
+    .btn-primary:hover { background: transparent; color: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,101,26,0.3); }
+    .btn-outline { background: transparent; color: var(--white); padding: 14px 32px; border-radius: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; border: 2px solid var(--border); }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+
+    footer { background: var(--black); padding: 60px 5% 30px; border-top: 1px solid var(--border); }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-brand p { color: var(--gray); font-size: 0.88rem; line-height: 1.7; margin-top: 1rem; max-width: 280px; }
+    .footer-col h5 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.86rem; transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+    .footer-links a::before { content: '›'; color: var(--orange); font-size: 1rem; line-height: 1; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { color: #7A8470; font-size: 0.8rem; }
+    .footer-bottom span { color: var(--orange); }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link { width: 36px; height: 36px; background: var(--dark2); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.9rem; color: var(--gray); transition: all 0.2s; }
+    .social-link:hover { background: var(--orange); border-color: var(--orange); color: white; transform: translateY(-2px); }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .services-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .types-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step { border-right: none; border-bottom: 1.5px solid var(--border); }
+    }
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-col:nth-child(2), .footer-col:nth-child(3) { display: none; }
+      .process-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="elektra-ifs-site.html" class="nav-logo">
+      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+      <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="elektra-ifs-site.html#domaines">Domaines</a></li>
+      <li><a href="elektra-ifs-site.html#formations">Formations</a></li>
+      <li><a href="elektra-ifs-site.html#ateliers">Ateliers</a></li>
+      <li><a href="elektra-ifs-site.html#why">Pourquoi nous</a></li>
+      <li><a href="elektra-ifs-site.html#contact">Contact</a></li>
+      <li><a href="elektra-ifs-site.html#contact" class="nav-cta">Nous contacter</a></li>
+    </ul>
+  </nav>
+
+  <div id="page-hero">
+    <div class="breadcrumb">
+      <a href="elektra-ifs-site.html">Accueil</a>
+      <span>›</span>
+      <span>Maintenance Industrielle</span>
+    </div>
+    <div class="page-hero-tag">🔧 Diagnostic & Maintenance</div>
+    <h1 class="page-hero-title">
+      <span class="accent">Maintenance</span><br/>
+      Industrielle
+    </h1>
+    <p class="page-hero-desc">
+      Diagnostic, maintenance préventive et corrective des équipements industriels. ELEKTRA IFS intervient rapidement pour réduire vos temps d'arrêt et optimiser les performances de vos installations — à Abidjan et dans toute la sous-région.
+    </p>
+    <div class="page-hero-actions">
+      <a href="elektra-ifs-site.html#contact" class="btn-primary">Intervention rapide</a>
+      <a href="#services" class="btn-outline">Nos prestations</a>
+    </div>
+    <div class="page-hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">48<span>h</span></span>
+        <span class="stat-label">Délai d'intervention</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">5<span>★</span></span>
+        <span class="stat-label">Satisfaction clients</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">CI<span>/RCI</span></span>
+        <span class="stat-label">Zone d'intervention</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100<span>%</span></span>
+        <span class="stat-label">Traçabilité</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="services-intro">
+      <div>
+        <div class="section-label">01 — Prestations</div>
+        <h2 class="section-title">Nos services<br/><span class="accent">de maintenance</span></h2>
+      </div>
+      <p class="services-intro-text">
+        Une panne non anticipée peut coûter très cher. ELEKTRA IFS propose des contrats de maintenance adaptés à votre parc machine et à votre activité. De la visite préventive planifiée à l'intervention corrective en urgence, nos techniciens qualifiés sont disponibles pour garantir la continuité de votre production.
+      </p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🛡️</div>
+        <h3>Maintenance Préventive</h3>
+        <p>Visites périodiques planifiées, inspections, nettoyage, lubrification, contrôle des serrages et remplacement des pièces d'usure avant défaillance.</p>
+        <div class="service-tags">
+          <span class="service-tag">Planifié</span>
+          <span class="service-tag">GMAO</span>
+          <span class="service-tag">Rapport détaillé</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚨</div>
+        <h3>Maintenance Corrective</h3>
+        <p>Intervention rapide en cas de panne ou d'arrêt machine. Diagnostic électrique, électronique et mécanique. Remise en service dans les plus brefs délais.</p>
+        <div class="service-tags">
+          <span class="service-tag">Urgence 48h</span>
+          <span class="service-tag">Diagnostic</span>
+          <span class="service-tag">Traçabilité</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔍</div>
+        <h3>Diagnostic & Audit Technique</h3>
+        <p>Évaluation complète de l'état de vos équipements. Identification des équipements critiques, analyse des historiques de pannes et recommandations d'amélioration.</p>
+        <div class="service-tags">
+          <span class="service-tag">AMDEC</span>
+          <span class="service-tag">Thermographie</span>
+          <span class="service-tag">Vibrations</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📋</div>
+        <h3>Plans de Maintenance</h3>
+        <p>Élaboration de plans de maintenance sur mesure, gammes opératoires, check-lists d'inspection et intégration dans vos outils de GMAO existants.</p>
+        <div class="service-tags">
+          <span class="service-tag">Gammes</span>
+          <span class="service-tag">Check-lists</span>
+          <span class="service-tag">GMAO</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Maintenance Électrique</h3>
+        <p>Contrôle des tableaux électriques, remplacement de composants, mise aux normes des installations, vérification des protections et des liaisons à la terre.</p>
+        <div class="service-tags">
+          <span class="service-tag">HTA/BTA</span>
+          <span class="service-tag">Conformité</span>
+          <span class="service-tag">Mesures</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🤝</div>
+        <h3>Contrats de Maintenance</h3>
+        <p>Contrats annuels ou pluriannuels avec engagement de disponibilité. Intervention prioritaire, rapports mensuels et suivi des indicateurs de performance.</p>
+        <div class="service-tags">
+          <span class="service-tag">SLA garanti</span>
+          <span class="service-tag">KPI mensuel</span>
+          <span class="service-tag">Prioritaire</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="types">
+    <div class="section-label">02 — Approche</div>
+    <h2 class="section-title">Préventive vs<br/><span class="accent-green">corrective</span></h2>
+    <div class="types-grid reveal">
+      <div class="type-card">
+        <span class="type-badge preventive">Maintenance Préventive</span>
+        <h3>Anticiper pour produire</h3>
+        <p>La maintenance préventive systématique ou conditionnelle permet d'anticiper les défaillances avant qu'elles ne surviennent, réduisant drastiquement les arrêts non planifiés.</p>
+        <ul class="type-list">
+          <li>Visites périodiques planifiées (mensuel, trimestriel, annuel)</li>
+          <li>Ronde de surveillance des paramètres machine</li>
+          <li>Remplacement préventif des consommables</li>
+          <li>Contrôle par thermographie infrarouge</li>
+          <li>Analyse vibratoire des équipements tournants</li>
+          <li>Mise à jour des programmes automates</li>
+        </ul>
+      </div>
+      <div class="type-card">
+        <span class="type-badge corrective">Maintenance Corrective</span>
+        <h3>Réagir vite, bien réparer</h3>
+        <p>Lorsqu'une panne survient, chaque heure d'arrêt représente un coût. Notre équipe intervient rapidement pour diagnostiquer et remettre en service vos équipements.</p>
+        <ul class="type-list">
+          <li>Astreinte téléphonique et télémaintenance</li>
+          <li>Déplacement sous 48h ouvrées</li>
+          <li>Diagnostic électrique, électronique, mécanique</li>
+          <li>Fourniture et remplacement de pièces</li>
+          <li>Rapport d'intervention et recommandations</li>
+          <li>Suivi de l'historique pour amélioration continue</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-label">03 — Méthodologie</div>
+    <h2 class="section-title">Comment nous<br/><span class="accent-green">intervenons</span></h2>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 01</span>
+        <h4>Prise en charge</h4>
+        <p>Réception de votre demande, qualification de l'urgence et affectation d'un technicien spécialisé en moins de 4h ouvrées.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 02</span>
+        <h4>Diagnostic</h4>
+        <p>Analyse de la panne ou de l'anomalie : tests électriques, lecture des codes erreurs, inspection visuelle et instrumentée.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 03</span>
+        <h4>Intervention & Réparation</h4>
+        <p>Mise en œuvre de la solution retenue : remplacement de composants, reconfiguration, câblage, ajustement ou reprogrammation.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">ÉTAPE 04</span>
+        <h4>Validation & Rapport</h4>
+        <p>Tests de bon fonctionnement, remise en service validée et remise du rapport d'intervention complet avec recommandations.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="cta-band">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Une panne ?<br/>Nous intervenons vite.</h2>
+        <p>Contactez-nous pour une intervention rapide ou pour établir un contrat de maintenance adapté à votre parc machine.</p>
+      </div>
+      <a href="elektra-ifs-site.html#contact" class="btn-white">Nous contacter</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="elektra-ifs-site.html" class="nav-logo" style="text-decoration:none;">
+          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+          <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
+        </a>
+        <p>Ingénierie Industrielle · Formations · Services. Nous rendons les systèmes complexes accessibles à tous les professionnels.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Domaines</h5>
+        <ul class="footer-links">
+          <li><a href="ingenierie-industrielle.html">Ingénierie industrielle</a></li>
+          <li><a href="maintenance-industrielle.html">Maintenance</a></li>
+          <li><a href="fabrication-machines.html">Fabrication machines</a></li>
+          <li><a href="formations-services.html">Formations & Services</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Formations</h5>
+        <ul class="footer-links">
+          <li><a href="formations-services.html">Automatisme PLC</a></li>
+          <li><a href="formations-services.html">SCADA WinCC</a></li>
+          <li><a href="formations-services.html">Instrumentation</a></li>
+          <li><a href="formations-services.html">Énergies solaires</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul class="footer-links">
+          <li><a href="elektra-ifs-site.html#contact">Nous contacter</a></li>
+          <li><a href="elektra-ifs-site.html#ateliers">Ateliers pratiques</a></li>
+          <li><a href="elektra-ifs-site.html">Accueil</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>ELEKTRA IFS</span> · Tous droits réservés · Abidjan, Côte d'Ivoire</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/ELEKTRACI" class="social-link" target="_blank" title="Facebook">f</a>
+        <a href="https://www.linkedin.com/company/elektra-ing%C3%A9nierie-et-formation/" class="social-link" target="_blank" title="LinkedIn">in</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
