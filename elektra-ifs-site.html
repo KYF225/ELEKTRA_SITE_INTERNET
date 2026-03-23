@@ -1193,6 +1193,12 @@
         <p>Programmes de formation continue sur mesure pour techniciens et ingénieurs. Automatisme, électrotechnique, instrumentation, énergies renouvelables et plus encore.</p>
         <a href="formations-services.html" class="domaine-link">Explorer →</a>
       </div>
+      <div class="domaine-card">
+        <div class="domaine-icon">☀️</div>
+        <h3>Énergies Renouvelables</h3>
+        <p>Conception et installation de systèmes solaires photovoltaïques et micro-éoliens. Solutions d'énergie propre et durable pour l'industrie, le tertiaire et les particuliers.</p>
+        <a href="energies.html" class="domaine-link">Explorer →</a>
+      </div>
     </div>
   </section>
 
@@ -1458,14 +1464,17 @@
         </div>
         <div class="form-group">
           <label>Sujet *</label>
-          <select>
+          <select id="sujet-select">
             <option value="">— Sélectionnez un sujet —</option>
-            <option>Formation technique</option>
-            <option>Ingénierie industrielle</option>
-            <option>Maintenance</option>
-            <option>Fabrication de machine</option>
-            <option>Atelier pratique</option>
-            <option>Autre</option>
+            <option value="energie-solaire">⚡ Énergie solaire photovoltaïque</option>
+            <option value="micro-eolien">💨 Micro-éolien</option>
+            <option value="audit-energetique">🔋 Audit &amp; étude énergétique</option>
+            <option value="formation">Formation technique</option>
+            <option value="ingenierie">Ingénierie industrielle</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="fabrication">Fabrication de machine</option>
+            <option value="atelier">Atelier pratique</option>
+            <option value="autre">Autre</option>
           </select>
         </div>
         <div class="form-group">
@@ -1588,6 +1597,26 @@
         const target = document.querySelector(a.getAttribute('href'));
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
+    });
+  </script>
+
+  <!-- Pré-sélection du sujet via paramètre URL (?sujet=...) -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const params = new URLSearchParams(window.location.search);
+      const sujet = params.get('sujet');
+      if (sujet) {
+        const sel = document.getElementById('sujet-select');
+        if (sel) {
+          // Cherche l'option dont la value correspond
+          for (let opt of sel.options) {
+            if (opt.value === sujet) { sel.value = sujet; break; }
+          }
+          // Scroll vers le formulaire
+          const contact = document.getElementById('contact');
+          if (contact) contact.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     });
   </script>
 </body>
