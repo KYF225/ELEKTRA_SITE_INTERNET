@@ -158,7 +158,7 @@
 
   <nav id="navbar">
     <a href="elektra-ifs-site.html" class="nav-logo">
-      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" data-edit-img="logo" />
       <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
     </a>
     <ul class="nav-links">
@@ -177,12 +177,12 @@
       <span>›</span>
       <span>Maintenance Industrielle</span>
     </div>
-    <div class="page-hero-tag">🔧 Diagnostic & Maintenance</div>
+    <div class="page-hero-tag" data-edit="hero-tag">🔧 Diagnostic & Maintenance</div>
     <h1 class="page-hero-title">
-      <span class="accent">Maintenance</span><br/>
-      Industrielle
+      <span class="accent" data-edit="hero-title-1">Maintenance</span><br/>
+      <span data-edit="hero-title-2">Industrielle</span>
     </h1>
-    <p class="page-hero-desc">
+    <p class="page-hero-desc" data-edit="hero-desc">
       Diagnostic, maintenance préventive et corrective des équipements industriels. ELEKTRA IFS intervient rapidement pour réduire vos temps d'arrêt et optimiser les performances de vos installations — à Abidjan et dans toute la sous-région.
     </p>
     <div class="page-hero-actions">
@@ -191,20 +191,20 @@
     </div>
     <div class="page-hero-stats">
       <div class="stat-item">
-        <span class="stat-num">48<span>h</span></span>
-        <span class="stat-label">Délai d'intervention</span>
+        <span class="stat-num" data-edit="stat-1-num">48<span>h</span></span>
+        <span class="stat-label" data-edit="stat-1-label">Délai d'intervention</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">5<span>★</span></span>
-        <span class="stat-label">Satisfaction clients</span>
+        <span class="stat-num" data-edit="stat-2-num">5<span>★</span></span>
+        <span class="stat-label" data-edit="stat-2-label">Satisfaction clients</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">CI<span>/RCI</span></span>
-        <span class="stat-label">Zone d'intervention</span>
+        <span class="stat-num" data-edit="stat-3-num">CI<span>/RCI</span></span>
+        <span class="stat-label" data-edit="stat-3-label">Zone d'intervention</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">100<span>%</span></span>
-        <span class="stat-label">Traçabilité</span>
+        <span class="stat-num" data-edit="stat-4-num">100<span>%</span></span>
+        <span class="stat-label" data-edit="stat-4-label">Traçabilité</span>
       </div>
     </div>
   </div>
@@ -346,8 +346,8 @@
   <div id="cta-band">
     <div class="cta-inner">
       <div class="cta-text">
-        <h2>Une panne ?<br/>Nous intervenons vite.</h2>
-        <p>Contactez-nous pour une intervention rapide ou pour établir un contrat de maintenance adapté à votre parc machine.</p>
+        <h2 data-edit="cta-title">Une panne ?<br/>Nous intervenons vite.</h2>
+        <p data-edit="cta-desc">Contactez-nous pour une intervention rapide ou pour établir un contrat de maintenance adapté à votre parc machine.</p>
       </div>
       <a href="elektra-ifs-site.html#contact" class="btn-white">Nous contacter</a>
     </div>
@@ -357,7 +357,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="elektra-ifs-site.html" class="nav-logo" style="text-decoration:none;">
-          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" data-edit-img="logo" />
           <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
         </a>
         <p>Ingénierie Industrielle · Formations · Services. Nous rendons les systèmes complexes accessibles à tous les professionnels.</p>
@@ -407,6 +407,43 @@
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
+  </script>
+
+  <script>
+  (function(){
+    try {
+      var imgs = JSON.parse(localStorage.getItem('elektra_images')||'{}');
+      if(imgs.logo) document.querySelectorAll('[data-edit-img="logo"]').forEach(function(e){e.src=imgs.logo;});
+      var d = JSON.parse(localStorage.getItem('elektra_content_maint')||'{}');
+      Object.keys(d).forEach(function(k){
+        var el=document.querySelector('[data-edit="'+k+'"]');
+        if(el&&d[k]) el.innerHTML=d[k];
+      });
+      var M={
+        'svc-1-icon':'.services-grid .service-card:nth-child(1) .service-icon',
+        'svc-1-title':'.services-grid .service-card:nth-child(1) h3',
+        'svc-1-desc':'.services-grid .service-card:nth-child(1) > p',
+        'svc-2-icon':'.services-grid .service-card:nth-child(2) .service-icon',
+        'svc-2-title':'.services-grid .service-card:nth-child(2) h3',
+        'svc-2-desc':'.services-grid .service-card:nth-child(2) > p',
+        'svc-3-icon':'.services-grid .service-card:nth-child(3) .service-icon',
+        'svc-3-title':'.services-grid .service-card:nth-child(3) h3',
+        'svc-3-desc':'.services-grid .service-card:nth-child(3) > p',
+        'svc-4-icon':'.services-grid .service-card:nth-child(4) .service-icon',
+        'svc-4-title':'.services-grid .service-card:nth-child(4) h3',
+        'svc-4-desc':'.services-grid .service-card:nth-child(4) > p',
+        'step-1-title':'.process-steps .process-step:nth-child(1) h4',
+        'step-1-desc':'.process-steps .process-step:nth-child(1) p',
+        'step-2-title':'.process-steps .process-step:nth-child(2) h4',
+        'step-2-desc':'.process-steps .process-step:nth-child(2) p',
+        'step-3-title':'.process-steps .process-step:nth-child(3) h4',
+        'step-3-desc':'.process-steps .process-step:nth-child(3) p',
+        'step-4-title':'.process-steps .process-step:nth-child(4) h4',
+        'step-4-desc':'.process-steps .process-step:nth-child(4) p'
+      };
+      Object.keys(M).forEach(function(k){ if(d[k]){var el=document.querySelector(M[k]);if(el)el.innerHTML=d[k];}});
+    }catch(e){}
+  })();
   </script>
 </body>
 </html>

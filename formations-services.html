@@ -163,7 +163,7 @@
 
   <nav id="navbar">
     <a href="elektra-ifs-site.html" class="nav-logo">
-      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+      <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" data-edit-img="logo" />
       <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
     </a>
     <ul class="nav-links">
@@ -182,12 +182,12 @@
       <span>›</span>
       <span>Formations & Services</span>
     </div>
-    <div class="page-hero-tag">🎓 Formation continue & Intra-entreprise</div>
+    <div class="page-hero-tag" data-edit="hero-tag">🎓 Formation continue & Intra-entreprise</div>
     <h1 class="page-hero-title">
-      <span class="accent">Formations</span><br/>
-      <span class="accent-green">&amp;</span> Services
+      <span class="accent" data-edit="hero-title-1">Formations</span><br/>
+      <span data-edit="hero-title-2"><span class="accent-green">&amp;</span> Services</span>
     </h1>
-    <p class="page-hero-desc">
+    <p class="page-hero-desc" data-edit="hero-desc">
       Programmes de formation continue sur mesure pour techniciens et ingénieurs. Automatisme, électrotechnique, instrumentation, SCADA et énergies renouvelables. Formations intra-entreprise, inter-entreprise et e-learning — à Abidjan ou dans toute la sous-région.
     </p>
     <div class="page-hero-actions">
@@ -196,20 +196,20 @@
     </div>
     <div class="page-hero-stats">
       <div class="stat-item">
-        <span class="stat-num">150<span>+</span></span>
-        <span class="stat-label">Formations dispensées</span>
+        <span class="stat-num" data-edit="stat-1-num">150<span>+</span></span>
+        <span class="stat-label" data-edit="stat-1-label">Formations dispensées</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">6</span>
-        <span class="stat-label">Thématiques</span>
+        <span class="stat-num" data-edit="stat-2-num">6</span>
+        <span class="stat-label" data-edit="stat-2-label">Thématiques</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">100<span>%</span></span>
-        <span class="stat-label">Approche pratique</span>
+        <span class="stat-num" data-edit="stat-3-num">100<span>%</span></span>
+        <span class="stat-label" data-edit="stat-3-label">Approche pratique</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">B2B</span>
-        <span class="stat-label">Intra-entreprise</span>
+        <span class="stat-num" data-edit="stat-4-num">B2B</span>
+        <span class="stat-label" data-edit="stat-4-label">Intra-entreprise</span>
       </div>
     </div>
   </div>
@@ -371,8 +371,8 @@
   <div id="cta-band">
     <div class="cta-inner">
       <div class="cta-text">
-        <h2>Prêt à former<br/>vos équipes ?</h2>
-        <p>Contactez-nous pour un programme personnalisé. Intra-entreprise, sur mesure, à Abidjan ou en région.</p>
+        <h2 data-edit="cta-title">Prêt à former<br/>vos équipes ?</h2>
+        <p data-edit="cta-desc">Contactez-nous pour un programme personnalisé. Intra-entreprise, sur mesure, à Abidjan ou en région.</p>
       </div>
       <a href="elektra-ifs-site.html#contact" class="btn-white">Demander un devis</a>
     </div>
@@ -382,7 +382,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="elektra-ifs-site.html" class="nav-logo" style="text-decoration:none;">
-          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" />
+          <img src="logo-elektra.png" alt="ELEKTRA IFS Logo" class="nav-logo-img" data-edit-img="logo" />
           <span class="nav-logo-text">ELEKTRA <span>IFS</span></span>
         </a>
         <p>Ingénierie Industrielle · Formations · Services. Nous rendons les systèmes complexes accessibles à tous les professionnels.</p>
@@ -432,6 +432,35 @@
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
+  </script>
+
+  <script>
+  (function(){
+    try {
+      var imgs = JSON.parse(localStorage.getItem('elektra_images')||'{}');
+      if(imgs.logo) document.querySelectorAll('[data-edit-img="logo"]').forEach(function(e){e.src=imgs.logo;});
+      var d = JSON.parse(localStorage.getItem('elektra_content_form')||'{}');
+      Object.keys(d).forEach(function(k){
+        var el=document.querySelector('[data-edit="'+k+'"]');
+        if(el&&d[k]) el.innerHTML=d[k];
+      });
+      var M={
+        'svc-1-title':'.formations-grid .formation-card:nth-child(1) h3',
+        'svc-1-desc':'.formations-grid .formation-card:nth-child(1) p',
+        'svc-2-title':'.formations-grid .formation-card:nth-child(2) h3',
+        'svc-2-desc':'.formations-grid .formation-card:nth-child(2) p',
+        'svc-3-title':'.formations-grid .formation-card:nth-child(3) h3',
+        'svc-3-desc':'.formations-grid .formation-card:nth-child(3) p',
+        'svc-4-title':'.formations-grid .formation-card:nth-child(4) h3',
+        'svc-4-desc':'.formations-grid .formation-card:nth-child(4) p',
+        'svc-5-title':'.formations-grid .formation-card:nth-child(5) h3',
+        'svc-5-desc':'.formations-grid .formation-card:nth-child(5) p',
+        'svc-6-title':'.formations-grid .formation-card:nth-child(6) h3',
+        'svc-6-desc':'.formations-grid .formation-card:nth-child(6) p'
+      };
+      Object.keys(M).forEach(function(k){ if(d[k]){var el=document.querySelector(M[k]);if(el)el.innerHTML=d[k];}});
+    }catch(e){}
+  })();
   </script>
 </body>
 </html>
