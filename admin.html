@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — ELEKTRA IFS</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F2F4EF;
+      --surface: #FFFFFF;
+      --surface2: #F8FAF5;
+      --border: rgba(0,0,0,0.1);
+      --text: #1A1C18;
+      --muted: #5A6450;
+      --green: #2D6A35;
+      --green-dim: rgba(45,106,53,0.1);
+      --orange: #E8651A;
+      --orange-dim: rgba(232,101,26,0.1);
+      --danger: #C0392B;
+      --sidebar-w: 240px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'Outfit', sans-serif; color: var(--text); background: var(--bg); font-size: 14px; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1A1C18 0%, #2D3A20 100%);
+    }
+    .login-box {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-logo h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--text);
+    }
+    .login-logo h1 span { color: var(--orange); }
+    .login-logo p { color: var(--muted); font-size: 0.82rem; margin-top: 4px; letter-spacing: 2px; text-transform: uppercase; }
+    .login-box label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; margin-top: 1.2rem; }
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      background: var(--surface2);
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+    .login-box input:focus { outline: none; border-color: var(--green); }
+    .login-error { color: var(--danger); font-size: 0.82rem; margin-top: 8px; display: none; }
+    .btn-login {
+      width: 100%;
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 6px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-login:hover { background: #F47B30; transform: translateY(-1px); }
+
+    /* ── LAYOUT ADMIN ── */
+    #admin-app { display: none; height: 100vh; flex-direction: row; }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #1A1C18;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 1.5rem 1.2rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sidebar-logo h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      color: #FFFFFF;
+    }
+    .sidebar-logo h2 span { color: var(--orange); }
+    .sidebar-logo p { font-size: 0.68rem; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+
+    .sidebar-nav { padding: 1rem 0; flex: 1; }
+    .nav-section-title {
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      padding: 1rem 1.2rem 0.4rem;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 1.2rem;
+      color: rgba(255,255,255,0.55);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: #FFFFFF; background: rgba(255,255,255,0.05); }
+    .nav-item.active { color: #FFFFFF; background: rgba(232,101,26,0.15); border-left-color: var(--orange); }
+    .nav-item .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    .sidebar-bottom {
+      padding: 1rem 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-sidebar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-preview { background: var(--green); color: white; }
+    .btn-preview:hover { background: #245429; }
+    .btn-export { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+    .btn-export:hover { background: rgba(255,255,255,0.18); }
+    .btn-logout { background: transparent; color: rgba(255,255,255,0.35); font-size: 0.75rem; }
+    .btn-logout:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── MAIN CONTENT ── */
+    .admin-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .admin-topbar {
+      height: 60px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      flex-shrink: 0;
+    }
+    .topbar-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn-save {
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 9px 22px;
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-save:hover { background: #F47B30; transform: translateY(-1px); }
+    .btn-save:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+    .btn-reset {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid rgba(192,57,43,0.3);
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-reset:hover { background: rgba(192,57,43,0.06); border-color: var(--danger); }
+
+    .toast {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #1A1C18;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 9999;
+      transform: translateY(-80px);
+      opacity: 0;
+      transition: all 0.35s ease;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 3px solid #28C840; }
+    .toast.error { border-left: 3px solid var(--danger); }
+
+    /* ── PANELS ── */
+    .admin-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      background: var(--bg);
+    }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .panel-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .panel-section-header {
+      padding: 1rem 1.5rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .panel-section-body { padding: 1.5rem; }
+
+    .field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+    .field-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label {
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field input[type="url"],
+    .field textarea,
+    .field select {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--surface2);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(45,106,53,0.12);
+    }
+    .field textarea { min-height: 80px; }
+    .field .hint { font-size: 0.7rem; color: #9AA090; margin-top: 2px; }
+
+    .card-set { display: flex; flex-direction: column; gap: 1rem; }
+    .card-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .card-item-header {
+      background: var(--surface2);
+      padding: 0.75rem 1rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .card-item-header .collapse-arrow { margin-left: auto; transition: transform 0.2s; }
+    .card-item-header.collapsed .collapse-arrow { transform: rotate(-90deg); }
+    .card-item-body { padding: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .card-item-body.hidden { display: none; }
+
+    .color-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .badge-green { background: var(--green-dim); color: var(--green); }
+    .badge-orange { background: var(--orange-dim); color: var(--orange); }
+    .badge-blue { background: rgba(52,120,210,0.1); color: #3478D2; }
+
+    .info-banner {
+      background: var(--green-dim);
+      border: 1px solid rgba(45,106,53,0.2);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--green);
+      font-size: 0.82rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { width: 60px; }
+      .sidebar-logo p, .nav-item span, .sidebar-logo h2, .nav-section-title, .btn-sidebar span { display: none; }
+      .sidebar-bottom .btn-sidebar { padding: 10px; }
+      .admin-content { padding: 1rem; }
+      .field-grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ LOGIN ════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <h1>ELEKTRA <span>IFS</span></h1>
+      <p>Panneau d'administration</p>
+    </div>
+    <label for="pwd">Mot de passe</label>
+    <input type="password" id="pwd" placeholder="••••••••••" autocomplete="current-password" />
+    <p class="login-error" id="login-error">❌ Mot de passe incorrect</p>
+    <button class="btn-login" id="btn-login">Accéder →</button>
+  </div>
+</div>
+
+<!-- ════ APP ADMIN ════ -->
+<div id="admin-app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h2>ELEKTRA <span>IFS</span></h2>
+      <p>Admin</p>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Contenu</div>
+      <div class="nav-item active" data-panel="hero"><span class="nav-icon">🏠</span><span>Accueil (Hero)</span></div>
+      <div class="nav-item" data-panel="domaines"><span class="nav-icon">⚙️</span><span>Domaines</span></div>
+      <div class="nav-item" data-panel="formations"><span class="nav-icon">🎓</span><span>Formations</span></div>
+      <div class="nav-item" data-panel="ateliers"><span class="nav-icon">🔬</span><span>Ateliers</span></div>
+      <div class="nav-section-title">Entreprise</div>
+      <div class="nav-item" data-panel="contact"><span class="nav-icon">📞</span><span>Coordonnées</span></div>
+      <div class="nav-item" data-panel="cta"><span class="nav-icon">📢</span><span>Bannière CTA</span></div>
+      <div class="nav-item" data-panel="footer"><span class="nav-icon">🔗</span><span>Pied de page</span></div>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="elektra-ifs-site.html" target="_blank" class="btn-sidebar btn-preview"><span>👁</span><span> Prévisualiser</span></a>
+      <button class="btn-sidebar btn-export" id="btn-export-html"><span>💾</span><span> Exporter HTML</span></button>
+      <button class="btn-sidebar btn-logout" id="btn-logout"><span>🚪</span><span> Déconnexion</span></button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <span class="topbar-title" id="topbar-label">Accueil — Hero</span>
+      <div class="topbar-actions">
+        <button class="btn-reset" id="btn-reset-all" title="Réinitialiser tout le contenu">↺ Réinitialiser</button>
+        <button class="btn-save" id="btn-save">✓ Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- ── HERO ── -->
+      <div class="panel active" id="panel-hero">
+        <div class="info-banner">ℹ️ Modifiez les textes de la section principale (première page visible).</div>
+
+        <div class="panel-section">
+          <div class="panel-section-header">🏷️ Badge & Slogan</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field full">
+                <label>Badge (texte sous le logo)</label>
+                <input type="text" data-key="hero-badge" placeholder="📍 Abidjan, Côte d'Ivoire · Depuis 2017" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-header">📰 Titre principal</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label>Ligne 1 <span class="color-badge badge-green">Vert</span></label>
+                <input type="text" data-key="hero-title-1" placeholder="Ingénierie" />
+              </div>
+              <div class="field">
+                <label>Ligne 2 <span class="color-badge">Neutre</span></label>
+                <input type="text" data-key="hero-title-2" placeholder="Industrielle" />
+              </div>
+              <div class="field">
+                <label>Ligne 3 <span class="color-badge badge-orange">Orange</span></label>
+                <input type="text" data-key="hero-title-3" placeholder="& Formations" />
+              </div>
+              <div class="field full">
+                <label>Sous-titre (tagline)</label>
+                <input type="text" data-key="hero-tagline" placeholder="Automatisme · Électrotechnique · Énergies · Instrumentation" />
+                <span class="hint">Le mot mis en orange sera entouré de balises span — ex : <code>Automatisme · &lt;span&gt;Énergies&lt;/span&gt;</code></span>
+              </div>
+              <div class="field full">
+                <label>Description (paragraphe)</label>
+                <textarea data-key="hero-desc" rows="3" placeholder="ELEKTRA IFS accompagne les entreprises..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-header">📊 Statistiques (4 chiffres)</div>
+          <div class="panel-section-body">
+            <div class="card-set">
+              <div class="card-item">
+                <div class="card-item-header">Statistique 1</div>
+                <div class="card-item-body">
+                  <div class="field"><label>Chiffre</label><input type="text" data-key="stat-1-num" placeholder="150+" /></div>
+                  <div class="field"><label>Libellé</label><input type="text" data-key="stat-1-label" placeholder="Formations dispensées" /></div>
+                </div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-header">Statistique 2</div>
+                <div class="card-item-body">
+                  <div class="field"><label>Chiffre</label><input type="text" data-key="stat-2-num" placeholder="4" /></div>
+                  <div class="field"><label>Libellé</label><input type="text" data-key="stat-2-label" placeholder="Domaines d'expertise" /></div>
+                </div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-header">Statistique 3</div>
+                <div class="card-item-body">
+                  <div class="field"><label>Chiffre</label><input type="text" data-key="stat-3-num" placeholder="3" /></div>
+                  <div class="field"><label>Libellé</label><input type="text" data-key="stat-3-label" placeholder="Ateliers pratiques" /></div>
+                </div>
+              </div>
+              <div class="card-item">
+                <div class="card-item-header">Statistique 4</div>
+                <div class="card-item-body">
+                  <div class="field"><label>Chiffre</label><input type="text" data-key="stat-4-num" placeholder="100%" /></div>
+                  <div class="field"><label>Libellé</label><input type="text" data-key="stat-4-label" placeholder="Approche pratique" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DOMAINES ── -->
+      <div class="panel" id="panel-domaines">
+        <div class="info-banner">ℹ️ Les 5 cartes de domaines d'activité (section "Nos domaines d'activité").</div>
+        <div class="card-set">
+          <div class="card-item" id="dom-card-1">
+            <div class="card-item-header" data-toggle="dom-body-1">⚙️ <span>Domaine 1</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="dom-body-1">
+              <div class="field"><label>Icône (emoji)</label><input type="text" data-key="dom-1-icon" placeholder="⚙️" maxlength="4" /></div>
+              <div class="field"><label>Titre</label><input type="text" data-key="dom-1-title" placeholder="Ingénierie Industrielle" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="dom-1-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien de la page (href)</label><input type="text" data-key="dom-1-link" data-href="true" placeholder="ingenierie-industrielle.html" /></div>
+            </div>
+          </div>
+          <div class="card-item" id="dom-card-2">
+            <div class="card-item-header" data-toggle="dom-body-2">🔧 <span>Domaine 2</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="dom-body-2">
+              <div class="field"><label>Icône (emoji)</label><input type="text" data-key="dom-2-icon" placeholder="🔧" maxlength="4" /></div>
+              <div class="field"><label>Titre</label><input type="text" data-key="dom-2-title" placeholder="Maintenance Industrielle" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="dom-2-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien de la page (href)</label><input type="text" data-key="dom-2-link" data-href="true" placeholder="maintenance-industrielle.html" /></div>
+            </div>
+          </div>
+          <div class="card-item" id="dom-card-3">
+            <div class="card-item-header" data-toggle="dom-body-3">🏭 <span>Domaine 3</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="dom-body-3">
+              <div class="field"><label>Icône (emoji)</label><input type="text" data-key="dom-3-icon" placeholder="🏭" maxlength="4" /></div>
+              <div class="field"><label>Titre</label><input type="text" data-key="dom-3-title" placeholder="Fabrication de Machines" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="dom-3-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien de la page (href)</label><input type="text" data-key="dom-3-link" data-href="true" placeholder="fabrication-machines.html" /></div>
+            </div>
+          </div>
+          <div class="card-item" id="dom-card-4">
+            <div class="card-item-header" data-toggle="dom-body-4">🎓 <span>Domaine 4</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="dom-body-4">
+              <div class="field"><label>Icône (emoji)</label><input type="text" data-key="dom-4-icon" placeholder="🎓" maxlength="4" /></div>
+              <div class="field"><label>Titre</label><input type="text" data-key="dom-4-title" placeholder="Formations & Services" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="dom-4-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien de la page (href)</label><input type="text" data-key="dom-4-link" data-href="true" placeholder="formations-services.html" /></div>
+            </div>
+          </div>
+          <div class="card-item" id="dom-card-5">
+            <div class="card-item-header" data-toggle="dom-body-5">☀️ <span>Domaine 5</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="dom-body-5">
+              <div class="field"><label>Icône (emoji)</label><input type="text" data-key="dom-5-icon" placeholder="☀️" maxlength="4" /></div>
+              <div class="field"><label>Titre</label><input type="text" data-key="dom-5-title" placeholder="Énergies Renouvelables" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="dom-5-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien de la page (href)</label><input type="text" data-key="dom-5-link" data-href="true" placeholder="formations-services.html" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FORMATIONS ── -->
+      <div class="panel" id="panel-formations">
+        <div class="info-banner">ℹ️ Les 6 cartes de formations de la section "Nos formations techniques".</div>
+        <div class="card-set" id="formations-list">
+          <!-- Généré dynamiquement -->
+        </div>
+      </div>
+
+      <!-- ── ATELIERS ── -->
+      <div class="panel" id="panel-ateliers">
+        <div class="info-banner">ℹ️ Les 3 ateliers pratiques en ligne.</div>
+        <div class="card-set">
+          <div class="card-item">
+            <div class="card-item-header" data-toggle="atelier-body-1">01 <span>Atelier 1</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="atelier-body-1">
+              <div class="field"><label>Titre</label><input type="text" data-key="atelier-1-title" placeholder="Câblage S7-1200" /></div>
+              <div class="field"><label>Prix</label><input type="text" data-key="atelier-1-price" placeholder="20.000 FCFA" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="atelier-1-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien (href)</label><input type="text" data-key="atelier-1-link" data-href="true" placeholder="atelier-cablage-s7-1200.html" /></div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-item-header" data-toggle="atelier-body-2">02 <span>Atelier 2</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="atelier-body-2">
+              <div class="field"><label>Titre</label><input type="text" data-key="atelier-2-title" placeholder="E/S analogiques 4-20mA" /></div>
+              <div class="field"><label>Prix</label><input type="text" data-key="atelier-2-price" placeholder="20.000 FCFA" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="atelier-2-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien (href)</label><input type="text" data-key="atelier-2-link" data-href="true" placeholder="atelier-analogique-4-20ma.html" /></div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-item-header" data-toggle="atelier-body-3">03 <span>Atelier 3</span> <span class="collapse-arrow">▾</span></div>
+            <div class="card-item-body" id="atelier-body-3">
+              <div class="field"><label>Titre</label><input type="text" data-key="atelier-3-title" placeholder="SCADA WinCC Runtime" /></div>
+              <div class="field"><label>Prix</label><input type="text" data-key="atelier-3-price" placeholder="20.000 FCFA" /></div>
+              <div class="field full"><label>Description</label><textarea data-key="atelier-3-desc" rows="3"></textarea></div>
+              <div class="field full"><label>Lien (href)</label><input type="text" data-key="atelier-3-link" data-href="true" placeholder="atelier-scada-wincc.html" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTACT ── -->
+      <div class="panel" id="panel-contact">
+        <div class="info-banner">ℹ️ Coordonnées affichées dans la section Contact.</div>
+        <div class="panel-section">
+          <div class="panel-section-header">📍 Adresses</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label>Siège social</label>
+                <textarea data-key="contact-address" rows="2" placeholder="Cocody Riviera 3, Résidence de la Paix&#10;Abidjan, Côte d'Ivoire"></textarea>
+                <span class="hint">Utilisez &lt;br/&gt; pour un saut de ligne</span>
+              </div>
+              <div class="field">
+                <label>Bureau technique</label>
+                <textarea data-key="contact-bureau" rows="2" placeholder="UFR SSMT - LABTECH&#10;Abidjan, Côte d'Ivoire"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-header">📞 Téléphones</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label>Téléphone 1 (affiché)</label>
+                <input type="text" data-key="contact-phone1" placeholder="(+225) 07 08 60 51 36" />
+              </div>
+              <div class="field">
+                <label>Téléphone 1 (lien tel:)</label>
+                <input type="tel" data-key="contact-phone1-href" data-href="true" placeholder="tel:+2250708605136" />
+              </div>
+              <div class="field">
+                <label>Téléphone 2 (affiché)</label>
+                <input type="text" data-key="contact-phone2" placeholder="(+225) 01 02 92 18 94" />
+              </div>
+              <div class="field">
+                <label>Téléphone 2 (lien tel:)</label>
+                <input type="tel" data-key="contact-phone2-href" data-href="true" placeholder="tel:+2250102921894" />
+              </div>
+              <div class="field">
+                <label>Téléphone 3 (affiché)</label>
+                <input type="text" data-key="contact-phone3" placeholder="(+225) 05 05 75 23 16" />
+              </div>
+              <div class="field">
+                <label>Téléphone 3 (lien tel:)</label>
+                <input type="tel" data-key="contact-phone3-href" data-href="true" placeholder="tel:+2250505752316" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-header">✉️ Email & WhatsApp</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label>Email (affiché)</label>
+                <input type="text" data-key="contact-email" placeholder="contact@elektra-ifs.com" />
+              </div>
+              <div class="field">
+                <label>Email (lien mailto:)</label>
+                <input type="email" data-key="contact-email-href" data-href="true" placeholder="mailto:contact@elektra-ifs.com" />
+              </div>
+              <div class="field full">
+                <label>Numéro WhatsApp (pour le bouton flottant vert)</label>
+                <input type="text" id="whatsapp-number" placeholder="2250708605136" />
+                <span class="hint">Entrez le numéro sans + ni espaces (ex: 2250708605136)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CTA BAND ── -->
+      <div class="panel" id="panel-cta">
+        <div class="info-banner">ℹ️ La bande verte "Prêt à former vos équipes ?" entre les sections.</div>
+        <div class="panel-section">
+          <div class="panel-section-header">📢 Bannière appel à l'action</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field full">
+                <label>Titre</label>
+                <input type="text" data-key="cta-title" placeholder="Prêt à former vos équipes ?" />
+              </div>
+              <div class="field full">
+                <label>Description</label>
+                <textarea data-key="cta-desc" rows="2" placeholder="Contactez-nous pour un programme personnalisé..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FOOTER ── -->
+      <div class="panel" id="panel-footer">
+        <div class="info-banner">ℹ️ Contenu du pied de page et réseaux sociaux.</div>
+        <div class="panel-section">
+          <div class="panel-section-header">📝 Description marque</div>
+          <div class="panel-section-body">
+            <div class="field">
+              <label>Texte sous le logo (footer)</label>
+              <textarea data-key="footer-desc" rows="3" placeholder="Ingénierie Industrielle · Formations · Services..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-header">🌐 Réseaux sociaux</div>
+          <div class="panel-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label>URL Facebook</label>
+                <input type="url" id="social-facebook" placeholder="https://www.facebook.com/ELEKTRACI" />
+              </div>
+              <div class="field">
+                <label>URL LinkedIn</label>
+                <input type="url" id="social-linkedin" placeholder="https://www.linkedin.com/company/..." />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-section-header">©️ Copyright</div>
+          <div class="panel-section-body">
+            <div class="field">
+              <label>Texte copyright</label>
+              <input type="text" id="footer-copyright" placeholder="© 2025 ELEKTRA IFS · Tous droits réservés · Abidjan, Côte d'Ivoire" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-main -->
+</div><!-- /admin-app -->
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════ CONFIG ════
+const ADMIN_PASSWORD = 'elektra2025'; // Changez ce mot de passe
+const STORAGE_KEY = 'elektra_content';
+const SOCIAL_KEY = 'elektra_social';
+
+// ════ LOGIN ════
+function tryLogin() {
+  const pwd = document.getElementById('pwd').value;
+  if (pwd === ADMIN_PASSWORD) {
+    sessionStorage.setItem('elektra_admin_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'flex';
+    initAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd').style.borderColor = 'var(--danger)';
+  }
+}
+
+document.getElementById('btn-login').addEventListener('click', tryLogin);
+document.getElementById('pwd').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') tryLogin();
+  document.getElementById('login-error').style.display = 'none';
+  this.style.borderColor = '';
+});
+
+// Auto-login si déjà authentifié dans la session
+if (sessionStorage.getItem('elektra_admin_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-app').style.display = 'flex';
+  initAdmin();
+}
+
+// ════ FORMATIONS : génération dynamique ════
+const FORMATIONS_DATA = [
+  { num: 1, label: 'Automatisme PLC' },
+  { num: 2, label: 'SCADA WinCC' },
+  { num: 3, label: 'Instrumentation' },
+  { num: 4, label: 'Énergies solaires' },
+  { num: 5, label: 'Électrotechnique' },
+  { num: 6, label: 'Maintenance' },
+];
+
+function buildFormationsUI() {
+  const list = document.getElementById('formations-list');
+  list.innerHTML = FORMATIONS_DATA.map(f => `
+    <div class="card-item">
+      <div class="card-item-header" data-toggle="form-body-${f.num}">
+        0${f.num} <span>${f.label}</span> <span class="collapse-arrow">▾</span>
+      </div>
+      <div class="card-item-body" id="form-body-${f.num}">
+        <div class="field"><label>Tag / Catégorie</label><input type="text" data-key="form-${f.num}-tag" /></div>
+        <div class="field"><label>Titre</label><input type="text" data-key="form-${f.num}-title" /></div>
+        <div class="field full"><label>Description</label><textarea data-key="form-${f.num}-desc" rows="3"></textarea></div>
+        <div class="field"><label>Durée</label><input type="text" data-key="form-${f.num}-duree" placeholder="5 jours" /></div>
+        <div class="field"><label>Niveau</label><input type="text" data-key="form-${f.num}-niveau" placeholder="Débutant–Avancé" /></div>
+        <div class="field"><label>Format</label><input type="text" data-key="form-${f.num}-format" placeholder="Présentiel" /></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════ INIT ADMIN ════
+function initAdmin() {
+  buildFormationsUI();
+  loadDataIntoForm();
+  setupCollapse();
+  setupNav();
+}
+
+// ════ NAVIGATION ════
+const PANEL_LABELS = {
+  hero: 'Accueil — Hero',
+  domaines: 'Domaines d\'activité',
+  formations: 'Formations techniques',
+  ateliers: 'Ateliers pratiques',
+  contact: 'Coordonnées & Contact',
+  cta: 'Bannière CTA',
+  footer: 'Pied de page'
+};
+
+function setupNav() {
+  document.querySelectorAll('.nav-item[data-panel]').forEach(item => {
+    item.addEventListener('click', function () {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('panel-' + this.dataset.panel).classList.add('active');
+      document.getElementById('topbar-label').textContent = PANEL_LABELS[this.dataset.panel] || '';
+    });
+  });
+}
+
+// ════ COLLAPSE CARDS ════
+function setupCollapse() {
+  document.addEventListener('click', function(e) {
+    const hdr = e.target.closest('[data-toggle]');
+    if (!hdr) return;
+    const bodyId = hdr.dataset.toggle;
+    const body = document.getElementById(bodyId);
+    if (!body) return;
+    body.classList.toggle('hidden');
+    hdr.classList.toggle('collapsed');
+  });
+}
+
+// ════ LOAD DATA INTO FORM ════
+function loadDataIntoForm() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  const data = raw ? JSON.parse(raw) : {};
+  const hrefs = data._hrefs || {};
+
+  // Champs data-key (contenu texte)
+  document.querySelectorAll('[data-key]').forEach(function(el) {
+    const key = el.dataset.key;
+    const isHref = el.dataset.href === 'true';
+    if (isHref) {
+      el.value = hrefs[key] || '';
+    } else {
+      if (data[key] !== undefined) el.value = data[key];
+    }
+  });
+
+  // Réseaux sociaux
+  const social = JSON.parse(localStorage.getItem(SOCIAL_KEY) || '{}');
+  if (social.facebook) document.getElementById('social-facebook').value = social.facebook;
+  if (social.linkedin) document.getElementById('social-linkedin').value = social.linkedin;
+  if (social.whatsapp) document.getElementById('whatsapp-number').value = social.whatsapp;
+  if (social.copyright) document.getElementById('footer-copyright').value = social.copyright;
+}
+
+// ════ SAVE ════
+document.getElementById('btn-save').addEventListener('click', function() {
+  const data = {};
+  const hrefs = {};
+
+  document.querySelectorAll('[data-key]').forEach(function(el) {
+    const key = el.dataset.key;
+    const val = el.value.trim();
+    if (!val) return;
+    if (el.dataset.href === 'true') {
+      hrefs[key] = val;
+    } else {
+      data[key] = val;
+    }
+  });
+
+  data._hrefs = hrefs;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+  // Réseaux sociaux
+  const social = {
+    facebook: document.getElementById('social-facebook').value.trim(),
+    linkedin: document.getElementById('social-linkedin').value.trim(),
+    whatsapp: document.getElementById('whatsapp-number').value.trim(),
+    copyright: document.getElementById('footer-copyright').value.trim()
+  };
+  localStorage.setItem(SOCIAL_KEY, JSON.stringify(social));
+
+  showToast('✓ Modifications enregistrées', 'success');
+});
+
+// ════ RESET ════
+document.getElementById('btn-reset-all').addEventListener('click', function() {
+  if (!confirm('Réinitialiser TOUT le contenu ? Les modifications seront perdues.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(SOCIAL_KEY);
+  document.querySelectorAll('[data-key]').forEach(el => el.value = '');
+  document.getElementById('social-facebook').value = '';
+  document.getElementById('social-linkedin').value = '';
+  document.getElementById('whatsapp-number').value = '';
+  document.getElementById('footer-copyright').value = '';
+  showToast('↺ Contenu réinitialisé', 'success');
+});
+
+// ════ EXPORT HTML ════
+document.getElementById('btn-export-html').addEventListener('click', async function() {
+  showToast('⏳ Génération du fichier…', 'success');
+  try {
+    const resp = await fetch('elektra-ifs-site.html');
+    let html = await resp.text();
+
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const data = raw ? JSON.parse(raw) : {};
+    const hrefs = data._hrefs || {};
+
+    // Remplacer innerHTML des éléments data-edit
+    Object.entries(data).forEach(function(entry) {
+      var key = entry[0]; var val = entry[1];
+      if (key === '_hrefs') return;
+      var regex = new RegExp('(data-edit="' + escapeRegex(key) + '"[^>]*>)[^<]*(<)', 'g');
+      html = html.replace(regex, function(m, open, close) {
+        return open + val + close;
+      });
+    });
+
+    // Remplacer href des éléments data-edit-href
+    Object.entries(hrefs).forEach(function(entry) {
+      var key = entry[0]; var val = entry[1];
+      var regex = new RegExp('href="[^"]*"([^>]*data-edit-href="' + escapeRegex(key) + '")', 'g');
+      html = html.replace(regex, 'href="' + val + '"$1');
+    });
+
+    // Réseaux sociaux
+    const social = JSON.parse(localStorage.getItem(SOCIAL_KEY) || '{}');
+    if (social.facebook) {
+      html = html.replace(/href="https:\/\/www\.facebook\.com\/[^"]*"/, 'href="' + social.facebook + '"');
+    }
+    if (social.linkedin) {
+      html = html.replace(/href="https:\/\/www\.linkedin\.com\/[^"]*"/, 'href="' + social.linkedin + '"');
+    }
+    if (social.whatsapp) {
+      html = html.replace(/href="https:\/\/wa\.me\/[^"]*"/, 'href="https://wa.me/' + social.whatsapp + '"');
+    }
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'elektra-ifs-site.html';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✓ Fichier HTML téléchargé !', 'success');
+  } catch (e) {
+    showToast('❌ Erreur lors de la génération', 'error');
+    console.error(e);
+  }
+});
+
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ════ LOGOUT ════
+document.getElementById('btn-logout').addEventListener('click', function() {
+  sessionStorage.removeItem('elektra_admin_auth');
+  location.reload();
+});
+
+// ════ TOAST ════
+let toastTimer;
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
